@@ -57,10 +57,8 @@
         <div id="new-todo-box">
           <input type="text" id="new-todo" placeholder="New item" />
         </div>
-        <ul id="item-list">
-          {{#each todos}}
-            {{> todo_item}}
-          {{/each}}
+        <ul id="item-list" data-id="{{list_id}}">
+
         </ul>
       {{/if}}
     </div>
@@ -68,7 +66,7 @@
 </template>
 
 <template name="todo_item">
-  <li class="todo {{done_class}}">
+  <li class="todo {{done_class}}" data-id="{{_id}}">
     {{#if editing}}
       <div class="edit">
         <input id="todo-input" type="text" value="{{text}}" />

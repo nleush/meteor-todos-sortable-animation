@@ -45,9 +45,9 @@ Meteor.startup(function () {
         var info = data[i].contents[j];
         Todos.insert({list_id: list_id,
                       text: info[0],
+                      order: j,
                       timestamp: timestamp,
                       tags: info.slice(1)});
-        timestamp += 1; // ensure unique timestamp.
       }
     }
   }
