@@ -73,9 +73,20 @@ Template.todos.rendered = function() {
         this.handle.stop();
     }
 
-    // TODO: who will give context fro Template.todos.todos().
-    var handle = this.handle = Template.todos.todos().observe({
+    var dragging = false;
+    var tasksQueue = [];
+    var observeHandle;
+
+    var observer = {
         addedAt: function(document, atIndex, before) {
+
+            if (dragging) {
+                // TODO: update before!!
+                tasksQueue.push(function() {
+                    observer.addedAt(document, atIndex, before);
+                });
+                return;
+            }
 
             var todoItem = Meteor.render(function() {
                 return Template.todo_item(document);
@@ -87,7 +98,7 @@ Template.todos.rendered = function() {
                 items.append(todoItem);
             }
 
-            if (handle) {
+            if (observeHandle) {
                 // Initial ittems added. Manual adding - add animation.
 
                 var $el = items.find('li[data-id="' + document._id + '"]');
@@ -95,7 +106,23 @@ Template.todos.rendered = function() {
                 $el.slideDown();
             }
         },
-        changedAt: function(newDocument, oldDocument, atIndex) {
+        changed: function(newDocument, oldDocument) {
+
+            if (dragging) {
+                tasksQueue.push(function() {
+                    observer.changed(newDocument, oldDocument);
+                });
+                return;
+            }
+
+            console.log('changed');
+
+            if (newDocument.text != oldDocument.text) {
+                console.log('text');
+            }
+            if (newDocument.order != oldDocument.order) {
+                console.log('order');
+            }
 
             // Full rerender item.
 
@@ -116,6 +143,13 @@ Template.todos.rendered = function() {
         },
         removedAt: function(oldDocument, atIndex) {
 
+            if (dragging) {
+                tasksQueue.push(function() {
+                    observer.removedAt(oldDocument, atIndex);
+                });
+                return;
+            }
+
             var oldItem = items.find('li[data-id="' + oldDocument._id + '"]');
 
             oldItem.slideUp(function() {
@@ -128,8 +162,16 @@ Template.todos.rendered = function() {
         },
         movedTo: function(document, fromIndex, toIndex, before) {
 
+            if (dragging) {
+                tasksQueue.push(function() {
+                    observer.movedTo(document, fromIndex, toIndex, before);
+                });
+                return;
+            }
+
             // TODO: Prevent move on mover side.
-            // TODO: animated move other shifted items.
+
+            console.log('update move');
 
             var moveOperation;
 
@@ -189,16 +231,15 @@ Template.todos.rendered = function() {
                 moveItem(item, targetItem, moveOperation);
             }
         }
-    });
+    };
+
+    // TODO: who will give context fro Template.todos.todos().
+    observeHandle = this.handle = Template.todos.todos().observe(observer);
 
     items.sortable({
         axis: "y",
         start: function(event, ui) {
-            // TODO: Suspend updates.
-            //console.log('start',ui);
-        },
-        beforeStop: function(event, ui) {
-
+            dragging = true;
         },
         stop: function(event, ui) {
 
@@ -221,8 +262,17 @@ Template.todos.rendered = function() {
                 order = (Spark.getDataContext(before).order + Spark.getDataContext(after).order) / 2;
             }
 
-            if (oldOrder != order)
+            if (oldOrder != order) {
+                console.log('update order');
                 Todos.update(_id, {$set: {order: order}});
+            }
+            console.log('after stop');
+            dragging = false;
+
+            var task;
+            while (task = tasksQueue.shift()) {
+                task();
+            }
         }
     });
     items.disableSelection();
