@@ -76,6 +76,19 @@ Template.todos.rendered = function() {
     var dragging = false;
     var tasksQueue = [];
     var observeHandle;
+    var animation = 0;
+    function startAnimation() {
+        if (animation == 0) {
+            items.sortable( "option", "disabled", true );
+        }
+        animation++;
+    }
+    function stopAnimation() {
+        animation--;
+        if (animation == 0) {
+            items.sortable( "option", "disabled", false );
+        }
+    }
 
     var observer = {
         addedAt: function(document, atIndex, before) {
@@ -103,7 +116,10 @@ Template.todos.rendered = function() {
 
                 var $el = items.find('li[data-id="' + document._id + '"]');
                 $el.hide();
-                $el.slideDown();
+                startAnimation();
+                $el.slideDown(function() {
+                    stopAnimation();
+                });
             }
         },
         changed: function(newDocument, oldDocument) {
@@ -114,8 +130,6 @@ Template.todos.rendered = function() {
                 });
                 return;
             }
-
-            console.log('changed');
 
             if (newDocument.text != oldDocument.text) {
                 console.log('text');
@@ -171,8 +185,6 @@ Template.todos.rendered = function() {
 
             // TODO: Prevent move on mover side.
 
-            console.log('update move');
-
             var moveOperation;
 
             var item = items.find('li[data-id="' + document._id + '"]');
@@ -199,6 +211,8 @@ Template.todos.rendered = function() {
                 var toIdxC, toIdx = itemsIndex.index(targetItem);
                 var dir;
 
+                console.log(fromIdx, toIdx)
+
                 if (fromIdx > toIdx) {
                     // Move shifted items up.
                     fromIdxC = toIdx;
@@ -212,10 +226,12 @@ Template.todos.rendered = function() {
                 }
 
                 function moveItem(item, targetItem, cb) {
+                    startAnimation();
                     item.animate({
                         top: targetItem.offset().top - item.offset().top,
                         left: targetItem.offset().left - item.offset().left
                     } , 500 , "swing", function() {
+                        stopAnimation();
                         item.css('top', '0');
                         item.css('left', '0');
                         cb && cb();
@@ -275,6 +291,7 @@ Template.todos.rendered = function() {
             }
         }
     });
+
     items.disableSelection();
 
 };
