@@ -46,7 +46,6 @@ Meteor.startup(function () {
         Todos.insert({list_id: list_id,
                       text: info[0],
                       order: j,
-                      timestamp: timestamp,
                       tags: info.slice(1)});
       }
     }

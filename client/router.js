@@ -7,9 +7,15 @@ var TodosRouter = Backbone.Router.extend({
         ":list_id/:tag": "main"
     },
     main: function (list_id, tag) {
+
+        // Tag can contain spaces, need decode.
+        tag = tag && decodeURIComponent(tag);
+
         var oldList = Session.get("list_id");
         var oldTagFilter = Session.get("tag_filter");
+
         if (oldList !== list_id || tag !== oldTagFilter) {
+
             Session.set("list_id", list_id);
             Session.set("tag_filter", tag || null);
         }
