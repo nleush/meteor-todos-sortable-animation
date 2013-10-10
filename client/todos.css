@@ -169,7 +169,6 @@ h3 {
     height: 50px;
     position: relative;
     overflow: hidden;
-    border-top: 1px solid #ccc;
 }
 
 #item-list .todo .destroy {

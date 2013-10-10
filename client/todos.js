@@ -20,12 +20,13 @@ Template.todos.events(okCancelEvents(
     {
         ok: function (text, evt) {
             var tag = Session.get('tag_filter');
+            var first = Todos.findOne({}, {sort: {order: 1}});
+            var order = first ? first.order - 1 : 0;
             Todos.insert({
                 text: text,
                 list_id: Session.get('list_id'),
                 done: false,
-                timestamp: (new Date()).getTime(),
-                order: 0,
+                order: order,
                 tags: tag ? [tag] : []
             });
             evt.target.value = '';
@@ -73,7 +74,7 @@ Template.todos.rendered = function() {
     }
 
     // TODO: who will give context fro Template.todos.todos().
-    this.handle = Template.todos.todos().observe({
+    var handle = this.handle = Template.todos.todos().observe({
         addedAt: function(document, atIndex, before) {
 
             var todoItem = Meteor.render(function() {
@@ -85,8 +86,20 @@ Template.todos.rendered = function() {
             } else {
                 items.append(todoItem);
             }
+
+            if (handle) {
+                // Initial ittems added. Manual adding - add animation.
+
+                var $el = items.find('li[data-id="' + document._id + '"]');
+                $el.hide();
+                $el.slideDown();
+            }
         },
         changedAt: function(newDocument, oldDocument, atIndex) {
+
+            // Full rerender item.
+
+            // TODO: can we reinit current template context?
 
             var oldItem = items.find('li[data-id="' + oldDocument._id + '"]:last');
             var newItem = Meteor.render(function() {
@@ -105,15 +118,18 @@ Template.todos.rendered = function() {
 
             var oldItem = items.find('li[data-id="' + oldDocument._id + '"]');
 
-            // Destroy template.
-            // https://github.com/meteor/meteor/issues/392
-            Spark.finalize(oldItem[0]);
+            oldItem.slideUp(function() {
+                // Destroy template.
+                // https://github.com/meteor/meteor/issues/392
+                Spark.finalize(oldItem[0]);
 
-            oldItem.remove();
+                oldItem.remove();
+            });
         },
         movedTo: function(document, fromIndex, toIndex, before) {
 
             // TODO: Prevent move on mover side.
+            // TODO: animated move other shifted items.
 
             var moveOperation;
 
@@ -134,16 +150,44 @@ Template.todos.rendered = function() {
 
             if (moveOperation) {
                 var targetItem = items.find('li:nth("' + toIndex + '")');
-                item.animate({
-                    top: targetItem.offset().top - item.offset().top,
-                    left: targetItem.offset().left - item.offset().left
-                } , 200 , "swing", function() {
-                    item.css('top', '0');
-                    item.css('left', '0');
-                    moveOperation();
-                });
-            }
 
+                var itemsIndex = items.find('li');
+
+                var fromIdxC, fromIdx = itemsIndex.index(item);
+                var toIdxC, toIdx = itemsIndex.index(targetItem);
+                var dir;
+
+                if (fromIdx > toIdx) {
+                    // Move shifted items up.
+                    fromIdxC = toIdx;
+                    toIdxC = fromIdx - 1;
+                    dir = 1;
+                } else if (fromIdx < toIdx) {
+                    // Move shifted items down.
+                    fromIdxC = fromIdx + 1;
+                    toIdxC = toIdx;
+                    dir = -1;
+                }
+
+                function moveItem(item, targetItem, cb) {
+                    item.animate({
+                        top: targetItem.offset().top - item.offset().top,
+                        left: targetItem.offset().left - item.offset().left
+                    } , 500 , "swing", function() {
+                        item.css('top', '0');
+                        item.css('left', '0');
+                        cb && cb();
+                    });
+                }
+
+                for(var i = fromIdxC; i <= toIdxC; i++) {
+                    var item1 = items.find('li:nth("' + i + '")');
+                    var item2 = items.find('li:nth("' + (i + dir) + '")');
+                    moveItem(item1, item2);
+                }
+
+                moveItem(item, targetItem, moveOperation);
+            }
         }
     });
 
@@ -160,21 +204,25 @@ Template.todos.rendered = function() {
 
             var el = ui.item.get(0);
 
-            var _id = Spark.getDataContext(el)._id
+            var context = Spark.getDataContext(el);
+            var _id = context._id
+            var oldOrder = context.order;
 
             var before = ui.item.prev().get(0);
             var after = ui.item.next().get(0);
 
+
             var order;
-            if (!before) {
+            if (!before && after) {
                 order = Spark.getDataContext(after).order - 1;
-            } else if (!after) {
+            } else if (!after && before) {
                 order = Spark.getDataContext(before).order + 1;
-            } else {
+            } else if (after && before) {
                 order = (Spark.getDataContext(before).order + Spark.getDataContext(after).order) / 2;
             }
 
-            Todos.update(_id, {$set: {order: order}});
+            if (oldOrder != order)
+                Todos.update(_id, {$set: {order: order}});
         }
     });
     items.disableSelection();
