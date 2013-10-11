@@ -77,6 +77,18 @@ Template.todos.rendered = function() {
     var tasksQueue = [];
     var observeHandle;
     var animation = 0;
+    var animationDisabled = false;
+    var animationQueue = [];
+    function allowTask(task) {
+        if (dragging) {
+            tasksQueue.push(task);
+            return false;
+        } else if (animation > 0) {
+            animationQueue.push(task);
+            return false;
+        }
+        return true;
+    }
     function startAnimation() {
         if (animation == 0) {
             items.sortable( "option", "disabled", true );
@@ -86,6 +98,14 @@ Template.todos.rendered = function() {
     function stopAnimation() {
         animation--;
         if (animation == 0) {
+
+            animationDisabled = true;
+            var task;
+            while(task = animationQueue.pop()) {
+                task();
+            }
+            animationDisabled = false;
+
             items.sortable( "option", "disabled", false );
         }
     }
@@ -93,11 +113,9 @@ Template.todos.rendered = function() {
     var observer = {
         addedAt: function(document, atIndex, before) {
 
-            if (dragging) {
-                // TODO: update before!!
-                tasksQueue.push(function() {
-                    observer.addedAt(document, atIndex, before);
-                });
+            if (!allowTask(function() {
+                observer.addedAt(document, atIndex, before);
+            })) {
                 return;
             }
 
@@ -111,8 +129,8 @@ Template.todos.rendered = function() {
                 items.append(todoItem);
             }
 
-            if (observeHandle) {
-                // Initial ittems added. Manual adding - add animation.
+            if (observeHandle && !animationDisabled) {
+                // Initial ittems added (have observeHandle). Its manual user adding - add animation.
 
                 var $el = items.find('li[data-id="' + document._id + '"]');
                 $el.hide();
@@ -124,10 +142,11 @@ Template.todos.rendered = function() {
         },
         changed: function(newDocument, oldDocument) {
 
-            if (dragging) {
-                tasksQueue.push(function() {
-                    observer.changed(newDocument, oldDocument);
-                });
+            // This is not animated, but respect other animations.
+
+            if (!allowTask(function() {
+                observer.changed(newDocument, oldDocument);
+            })) {
                 return;
             }
 
@@ -140,7 +159,7 @@ Template.todos.rendered = function() {
 
             // Full rerender item.
 
-            // TODO: can we reinit current template context?
+            // TODO: can we reinit current template context instead?
 
             var oldItem = items.find('li[data-id="' + oldDocument._id + '"]:last');
             var newItem = Meteor.render(function() {
@@ -157,29 +176,37 @@ Template.todos.rendered = function() {
         },
         removedAt: function(oldDocument, atIndex) {
 
-            if (dragging) {
-                tasksQueue.push(function() {
-                    observer.removedAt(oldDocument, atIndex);
-                });
+            if (!allowTask(function() {
+                observer.removedAt(oldDocument, atIndex);
+            })) {
                 return;
             }
 
             var oldItem = items.find('li[data-id="' + oldDocument._id + '"]');
 
-            oldItem.slideUp(function() {
+            var task = function() {
                 // Destroy template.
                 // https://github.com/meteor/meteor/issues/392
                 Spark.finalize(oldItem[0]);
 
                 oldItem.remove();
-            });
+            };
+
+            if (animationDisabled) {
+                task();
+            } else {
+                startAnimation();
+                oldItem.slideUp(function() {
+                    task();
+                    stopAnimation();
+                });
+            }
         },
         movedTo: function(document, fromIndex, toIndex, before) {
 
-            if (dragging) {
-                tasksQueue.push(function() {
-                    observer.movedTo(document, fromIndex, toIndex, before);
-                });
+            if (!allowTask(function() {
+                observer.movedTo(document, fromIndex, toIndex, before);
+            })) {
                 return;
             }
 
@@ -203,48 +230,54 @@ Template.todos.rendered = function() {
             }
 
             if (moveOperation) {
-                var targetItem = items.find('li:nth("' + toIndex + '")');
 
                 var itemsIndex = items.find('li');
+                var targetItem = items.find('li:nth("' + toIndex + '")');
+                var fromIdx = itemsIndex.index(item);
+                var toIdx = itemsIndex.index(targetItem);
 
-                var fromIdxC, fromIdx = itemsIndex.index(item);
-                var toIdxC, toIdx = itemsIndex.index(targetItem);
-                var dir;
+                if (animationDisabled || fromIdx == toIdx) {
 
-                console.log(fromIdx, toIdx)
+                    moveOperation();
 
-                if (fromIdx > toIdx) {
-                    // Move shifted items up.
-                    fromIdxC = toIdx;
-                    toIdxC = fromIdx - 1;
-                    dir = 1;
-                } else if (fromIdx < toIdx) {
-                    // Move shifted items down.
-                    fromIdxC = fromIdx + 1;
-                    toIdxC = toIdx;
-                    dir = -1;
+                } else {
+
+                    var fromIdxC, toIdxC, dir;
+
+                    if (fromIdx > toIdx) {
+                        // Move shifted items up.
+                        fromIdxC = toIdx;
+                        toIdxC = fromIdx - 1;
+                        dir = 1;
+                    } else if (fromIdx < toIdx) {
+                        // Move shifted items down.
+                        fromIdxC = fromIdx + 1;
+                        toIdxC = toIdx;
+                        dir = -1;
+                    }
+
+                    function moveItem(item, targetItem, cb) {
+                        startAnimation();
+                        item.animate({
+                            top: targetItem.offset().top - item.offset().top,
+                            left: targetItem.offset().left - item.offset().left
+                        } , 500 , "swing", function() {
+                            item.css('top', '0');
+                            item.css('left', '0');
+                            cb && cb();
+
+                            stopAnimation();
+                        });
+                    }
+
+                    for(var i = fromIdxC; i <= toIdxC; i++) {
+                        var item1 = items.find('li:nth("' + i + '")');
+                        var item2 = items.find('li:nth("' + (i + dir) + '")');
+                        moveItem(item1, item2);
+                    }
+
+                    moveItem(item, targetItem, moveOperation);
                 }
-
-                function moveItem(item, targetItem, cb) {
-                    startAnimation();
-                    item.animate({
-                        top: targetItem.offset().top - item.offset().top,
-                        left: targetItem.offset().left - item.offset().left
-                    } , 500 , "swing", function() {
-                        stopAnimation();
-                        item.css('top', '0');
-                        item.css('left', '0');
-                        cb && cb();
-                    });
-                }
-
-                for(var i = fromIdxC; i <= toIdxC; i++) {
-                    var item1 = items.find('li:nth("' + i + '")');
-                    var item2 = items.find('li:nth("' + (i + dir) + '")');
-                    moveItem(item1, item2);
-                }
-
-                moveItem(item, targetItem, moveOperation);
             }
         }
     };
@@ -282,7 +315,7 @@ Template.todos.rendered = function() {
                 console.log('update order');
                 Todos.update(_id, {$set: {order: order}});
             }
-            console.log('after stop');
+
             dragging = false;
 
             var task;
