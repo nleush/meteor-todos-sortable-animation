@@ -152,6 +152,8 @@ Template.todos.rendered = function() {
             // Full rerender item.
 
             // TODO: can we reinit current template context instead?
+            // TODO: preserve input will not work.
+            // TODO: animation blurs focus.
 
             var oldItem = items.find('li[data-id="' + oldDocument._id + '"]:last');
             var newItem = Meteor.render(function() {
