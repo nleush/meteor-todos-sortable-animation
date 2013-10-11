@@ -149,14 +149,6 @@ Template.todos.rendered = function() {
             })) {
                 return;
             }
-
-            if (newDocument.text != oldDocument.text) {
-                console.log('text');
-            }
-            if (newDocument.order != oldDocument.order) {
-                console.log('order');
-            }
-
             // Full rerender item.
 
             // TODO: can we reinit current template context instead?
@@ -209,8 +201,6 @@ Template.todos.rendered = function() {
             })) {
                 return;
             }
-
-            // TODO: Prevent move on mover side.
 
             var moveOperation;
 
@@ -282,7 +272,7 @@ Template.todos.rendered = function() {
         }
     };
 
-    // TODO: who will give context fro Template.todos.todos().
+    // TODO: who will give context for Template.todos.todos().
     observeHandle = this.handle = Template.todos.todos().observe(observer);
 
     items.sortable({
@@ -312,7 +302,6 @@ Template.todos.rendered = function() {
             }
 
             if (oldOrder != order) {
-                console.log('update order');
                 Todos.update(_id, {$set: {order: order}});
             }
 
