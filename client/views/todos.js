@@ -293,7 +293,6 @@ Template.todos.rendered = function() {
             var before = ui.item.prev().get(0);
             var after = ui.item.next().get(0);
 
-
             var order;
             if (!before && after) {
                 order = Spark.getDataContext(after).order - 1;
