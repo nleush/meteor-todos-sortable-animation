@@ -1,3 +1,11 @@
+Template.list.created = function() {
+    this.handle = Meteor.subscribe('todos', this.data._id);
+};
+
+Template.list.destroyed = function() {
+    this.handle.stop();
+};
+
 Template.list.events({
     'click .list': function (evt) {
         // prevent clicks on <a> from refreshing the page.
@@ -6,6 +14,14 @@ Template.list.events({
         var $el = $(evt.target);
 
         if ($el.hasClass('destroy')) {
+
+            var count = Todos.find({
+                list_id: Session.get('list_id')
+            }).count();
+            if (count) {
+                return alert('Only empty list can be removed! Remove all todos first.');
+            }
+
             Lists.remove(this._id);
             // TODO: remove child todos.
         } else {
@@ -32,7 +48,10 @@ Template.list.events(okCancelEvents(
     }));
 
 Template.list.can_delete = function () {
-    return !this.good;
+    var count = Todos.find({
+        list_id: this._id
+    }).count();
+    return !this.good && count == 0;
 };
 
 Template.list.selected = function () {
