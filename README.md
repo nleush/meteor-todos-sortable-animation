@@ -1,8 +1,17 @@
 ## How to use step-by-step
 
+This is modified `todos` Meteor demo.
+
+Following features added:
+
+ 1. `sortable` from jquery-ui used for drag-n-drop todos and todo lists.
+ 2. Sorting animation displayed on other application clients while sorting.
+ 3. Remove and add animation added.
+ 4. Added url routing for tags filtering (just for fun).
+ 
 ### 1. Include animtion.js
 
-Just use this file in project to reuse drag-n-drop animations feature.
+Use [animation.js](../master/client/common/animation.js) file in your project to reuse drag-n-drop animations feature.
 
 ### 2. Create list item template with `data-id`
 
@@ -33,6 +42,8 @@ This step including following:
  4. Defines items cursor.
  5. Defines item template.
  6. Defines method of updating order.
+
+Example for todos:
 
     Template.todos.rendered = function() {
 
@@ -109,3 +120,9 @@ Anybody know to fix it?
 ### Only first change shown as animation.
 
 If many changes occurs - only first of them will be animated.
+
+## Roadmap
+
+ 1. Add list remove button (with removing todos and redirecting other watching that clients).
+ 2. Use [Iron Router](/EventedMind/iron-router).
+ 3. Create animated popup for editing something.
