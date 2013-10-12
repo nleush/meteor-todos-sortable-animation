@@ -52,56 +52,32 @@ This step including following:
 
 Example for todos:
 
-    Template.todos.rendered = function() {
+    Template.lists.rendered = function() {
 
-        var items = this.find('ul');
+        var items = this.find('.s-items');
         if (!items) {
             return;
         }
 
         var $items = $(items);
 
-        var list_id = $items.attr('data-id');
-
         // Prevent multiple `rendered` calls on one list.
         // `rendered` called each time after `items.append`. Solve this by trigger.
-        if (this.renderHackedFor == list_id) {
+        if (this.renderHacked) {
             return;
         }
-        this.renderHackedFor = list_id;
-
-        // Stop previous observer.
-        // If only tag changes subscription is kept alive.
-        if (this.handle) {
-            this.handle.stop();
-        }
+        this.renderHacked = true;
 
         // [animation] Init animation.
         var animation = createSortableListAnimation({
+            el: 'div',
             $items: $items,
-            template: Template.todo_item,
-            cursor: Template.todos.todos(),
+            template: Template.list,
+            cursor: Template.lists.lists(),
             onSortableStop: function(event, ui) {
-                var el = ui.item.get(0);
-
-                var context = Spark.getDataContext(el);
-                var _id = context._id
-                var oldOrder = context.order;
-
-                var before = ui.item.prev().get(0);
-                var after = ui.item.next().get(0);
-
-                var order;
-                if (!before && after) {
-                    order = Spark.getDataContext(after).order - 1;
-                } else if (!after && before) {
-                    order = Spark.getDataContext(before).order + 1;
-                } else if (after && before) {
-                    order = (Spark.getDataContext(before).order + Spark.getDataContext(after).order) / 2;
-                }
-
-                if (oldOrder != order) {
-                    Todos.update(_id, {$set: {order: order}});
+                var info = getItemOrderInfo(ui);
+                if (info.oldOrder != info.order) {
+                    Lists.update(info._id, {$set: {order: info.order}});
                 }
             }
         });
