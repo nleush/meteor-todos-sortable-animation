@@ -19,6 +19,17 @@ Template.todos.events(okCancelEvents(
     '#new-todo',
     {
         ok: function (text, evt) {
+
+            // Prevent from spam.
+            var count = Todos.find({
+                list_id: Session.get('list_id')
+            }).count();
+            if (count > 20) {
+                alert('Sorry, too much todos for demo! But you still can try console... ;)');
+                evt.target.value = "";
+                return;
+            }
+
             var tag = Session.get('tag_filter');
             var first = Todos.findOne({}, {sort: {order: 1}});
             var order = first ? first.order - 1 : 0;

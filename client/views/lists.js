@@ -14,6 +14,15 @@ Template.lists.events(okCancelEvents(
     '#new-list',
     {
         ok: function (text, evt) {
+
+            // Prevent from spam.
+            var count = Lists.find({}).count();
+            if (count > 20) {
+                alert('Sorry, too much lists for demo! But you still can try console... ;)');
+                evt.target.value = "";
+                return;
+            }
+
             var last = Lists.findOne({}, {sort: {order: -1}});
             var order = last ? last.order + 1 : 0;
             var id = Lists.insert({
