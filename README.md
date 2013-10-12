@@ -115,7 +115,7 @@ Example for todos:
 
 Inputs preservations will not work between binded data item changes.
 
-I don't know yet how to rerender template using updated context data. So, for now,every time data is changed - old template deleted and new one created.
+I don't know yet how to rerender template using updated context data. So, for now, every time item data is updated - old item template will be deleted and new one will be created.
 
 Anybody know to fix it?
 
