@@ -260,11 +260,14 @@ Animation.prototype.getObserverOptions = function() {
                     function moveItem(item, targetItem, cb) {
                         self.animationStarted();
 
+                        var positionCss = item.css('position');
+                        item.css('position', 'relative');
                         item.animate({
                             top: targetItem.offset().top - item.offset().top,
                             left: targetItem.offset().left - item.offset().left
                         } , 500 , "swing", function() {
 
+                            item.css('position', positionCss);
                             item.css('top', '0');
                             item.css('left', '0');
 
