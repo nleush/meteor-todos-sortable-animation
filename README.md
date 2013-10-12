@@ -1,6 +1,6 @@
-## How to use step-by-step
+# Meteor `todos` example with drag-n-drop and animation
 
-This is modified `todos` Meteor demo.
+This is modified `todos` Meteor example.
 
 Following features added:
 
@@ -8,6 +8,13 @@ Following features added:
  2. Sorting animation displayed on other application clients while sorting.
  3. Remove and add animation added.
  4. Added url routing for tags filtering (just for fun).
+
+I hope this feature will be added soon in Meteor in native way, as was written here: 
+[Previewing Meteor's new rendering engine: reactive sortable lists](http://www.meteor.com/blog/2013/09/13/previewing-meteors-new-rendering-engine-reactive-sortable-lists) by Avital Oliver
+
+I need it now, so had to implement something similar. I have only week of Meteor using experience, so any help or criticism will be appriciated.
+
+## How to use step-by-step
  
 ### 1. Include animtion.js
 
@@ -36,8 +43,8 @@ This will isolate item template and allows to identify each item.
 
 This step including following:
 
- 1. Prevents multiple nonusefull `rendered` calls.
- 2. Stops ovserver if template switched to another context.
+ 1. Prevents multiple useless `rendered` calls.
+ 2. Stops observer if template switched to another context.
  3. Defines items container.
  4. Defines items cursor.
  5. Defines item template.
@@ -112,17 +119,22 @@ I don't know yet how to rerender template using updated context data. So, for no
 
 Anybody know to fix it?
 
-
 ### Prevent list item rerender on mousedown
 
 `sortable` will work with element after mousedown. Don't make rerender events on mousedown, becuase `sortable` will not like it.
 
 ### Only first change shown as animation.
 
-If many changes occurs - only first of them will be animated.
+Not actually issue but can be odd: if many changes occurs - only first of them will be animated.
 
 ## Roadmap
+
+Also I want to implement following in next steps:
 
  1. Add list remove button (with removing todos and redirecting other watching that clients).
  2. Use [Iron Router](/EventedMind/iron-router).
  3. Create animated popup for editing something.
+
+## Contribute
+
+I'll be glad to receive any feedback or help on it. Fill free to make forks or issues.
