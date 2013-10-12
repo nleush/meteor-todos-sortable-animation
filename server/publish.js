@@ -3,7 +3,10 @@ Lists = new Meteor.Collection("lists");
 Chat = new Meteor.Collection("chat");
 
 Meteor.publish('chat', function () {
-    return Chat.find();
+    return Chat.find({}, {
+        sort: {timestamp: -1},
+        limit: 200
+    });
 });
 
 // Publish complete set of lists to all clients.
