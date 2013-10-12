@@ -204,6 +204,21 @@ h3 {
     color: #999;
 }
 
+#lists .list .destroy {
+    cursor: pointer;
+    float: right;
+    width: 20px;
+    height: 20px;
+}
+
+#lists .list:hover .destroy {
+    background: url('/destroy.png') no-repeat 0 0;
+}
+
+#lists .list .destroy:hover {
+    background-position: 0 -20px;
+}
+
 #item-list .todo:hover .destroy {
     background: url('/destroy.png') no-repeat 0 0;
 }

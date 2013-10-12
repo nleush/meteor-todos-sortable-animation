@@ -2,7 +2,15 @@ Template.list.events({
     'click .list': function (evt) {
         // prevent clicks on <a> from refreshing the page.
         evt.preventDefault();
-        Router.setList(this._id);
+
+        var $el = $(evt.target);
+
+        if ($el.hasClass('destroy')) {
+            Lists.remove(this._id);
+            // TODO: remove child todos.
+        } else {
+            Router.setList(this._id);
+        }
     },
     'dblclick .list': function (evt, tmpl) { // start editing list name
         Session.set('editing_listname', this._id);
