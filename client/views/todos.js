@@ -74,45 +74,11 @@ Template.todos.rendered = function() {
     }
 
     // [animation] Init animation.
-    var animation = new Animation({
+    var animation = createSortableListAnimation({
+        $items: $items,
         template: Template.todo_item,
-        disableDragging: function() {
-            $items.sortable("option", "disabled", true);
-        },
-        enableDragging: function() {
-            $items.sortable("option", "disabled", false);
-        },
-        getNthItem: function(n) {
-            return $items.find('li:nth("' + n + '")');
-        },
-        getItemIndex: function($item) {
-            var itemsIndex = $items.find('li');
-            return itemsIndex.index($item);
-        },
-        getItemById: function(id) {
-            return $items.find('li[data-id="' + id + '"]')
-        },
-        appendItem: function(item) {
-            $items.append(item);
-        }
-
-    });
-    var observer = animation.getObserverOptions();
-
-    // TODO: who will give context for Template.todos.todos().
-    // [animation] Init `observeHandle` to indicate manual adding items.
-    this.handle = Template.todos.todos().observe(observer);
-    animation.enableAddingAnimation = true;
-
-    // Init sortable.
-    $items.sortable({
-        axis: "y",
-        start: function(event, ui) {
-            // [animation] Disable dragging.
-            animation.draggingStarted();
-        },
-        stop: function(event, ui) {
-
+        cursor: Template.todos.todos(),
+        onSortableStop: function(event, ui) {
             var el = ui.item.get(0);
 
             var context = Spark.getDataContext(el);
@@ -121,7 +87,6 @@ Template.todos.rendered = function() {
 
             var before = ui.item.prev().get(0);
             var after = ui.item.next().get(0);
-
 
             var order;
             if (!before && after) {
@@ -135,12 +100,8 @@ Template.todos.rendered = function() {
             if (oldOrder != order) {
                 Todos.update(_id, {$set: {order: order}});
             }
-
-            // [animation] Enable dragging.
-            animation.draggingStopped();
         }
     });
 
-    $items.disableSelection();
-
+    this.handle = animation.observerHandle;
 };

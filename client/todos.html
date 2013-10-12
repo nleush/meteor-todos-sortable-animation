@@ -25,27 +25,29 @@
   {{#if loading}}
     <div id="lists">Loading...</div>
   {{else}}
-    <div id="lists">
-      {{#each lists}}
-        <div class="list {{selected}}">
-          {{#if editing}}
-            <div class="edit">
-              <input class="list-name-input" id="list-name-input" type="text" value="{{name}}" />
-            </div>
-          {{else}}
-            <div class="display">
-              <a class="list-name {{name_class}}" href="/{{_id}}">
-                {{name}}
-              </a>
-            </div>
-          {{/if}}
-        </div>
-      {{/each}}
+    <div id="lists" class="s-items">
+
     </div>
     <div id="createList">
       <input type="text" id="new-list" placeholder="New list" />
     </div>
   {{/if}}
+</template>
+
+<template name="list">
+    <div class="list {{selected}}" data-id="{{_id}}">
+        {{#if editing}}
+        <div class="edit">
+            <input class="list-name-input" id="list-name-input" type="text" value="{{name}}" />
+        </div>
+        {{else}}
+        <div class="display">
+            <a class="list-name {{name_class}}" href="/{{_id}}">
+                {{name}}
+            </a>
+        </div>
+        {{/if}}
+    </div>
 </template>
 
 <template name="todos">

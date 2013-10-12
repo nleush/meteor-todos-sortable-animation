@@ -1,3 +1,58 @@
+createSortableListAnimation = function(options) {
+
+    var template = options.template;
+    var $items = options.$items;
+    var cursor = options.cursor;
+    var el = options.el || 'li'
+    var onSortableStop = options.onSortableStop;
+
+    var animation = new Animation({
+        template: template,
+        disableDragging: function() {
+            $items.sortable("option", "disabled", true);
+        },
+        enableDragging: function() {
+            $items.sortable("option", "disabled", false);
+        },
+        getNthItem: function(n) {
+            return $items.find('>' + el + ':nth("' + n + '")');
+        },
+        getItemIndex: function($item) {
+            var itemsIndex = $items.find('>' + el);
+            return itemsIndex.index($item);
+        },
+        getItemById: function(id) {
+            return $items.find('>' + el + '[data-id="' + id + '"]')
+        },
+        appendItem: function(item) {
+            $items.append(item);
+        }
+    });
+
+    var observer = animation.getObserverOptions();
+    animation.observerHandle = cursor.observe(observer);
+    animation.enableAddingAnimation = true;
+
+    // Init sortable.
+    $items.sortable({
+        axis: "y",
+        delay: 150,
+        start: function(event, ui) {
+            // [animation] Disable dragging.
+            animation.draggingStarted();
+        },
+        stop: function(event, ui) {
+            onSortableStop(event, ui);
+
+            // [animation] Enable dragging.
+            animation.draggingStopped();
+        }
+    });
+    $items.disableSelection();
+
+    return animation;
+};
+
 Animation = function(options) {
     this.dragging = false;
     this.tasksQueue = [];
@@ -8,7 +63,7 @@ Animation = function(options) {
     // Set from outside after observer created.
     this.enableAddingAnimation = false;
 
-    // Optional params.
+    // Mandatory params.
     this.disableDragging = options.disableDragging;
     this.enableDragging = options.enableDragging;
     this.template = options.template;
