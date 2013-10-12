@@ -1,6 +1,6 @@
-# Meteor `todos` example with drag-n-drop and animation
+# Meteor "todos" example with drag-n-drop and animation
 
-This is modified `todos` Meteor example.
+This is modified [todos](http://www.meteor.com/examples/todos) Meteor example.
 
 Following features added:
 
