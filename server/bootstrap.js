@@ -42,14 +42,16 @@ Meteor.startup(function () {
     for (var i = 0; i < data.length; i++) {
       var list_id = Lists.insert({
           name: data[i].name,
-          order: i
+          order: i,
+          good: true
       });
       for (var j = 0; j < data[i].contents.length; j++) {
         var info = data[i].contents[j];
         Todos.insert({list_id: list_id,
                       text: info[0],
                       order: j,
-                      tags: info.slice(1)});
+                      tags: info.slice(1),
+                      good: true});
       }
     }
   }

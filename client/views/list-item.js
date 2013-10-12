@@ -31,6 +31,10 @@ Template.list.events(okCancelEvents(
         }
     }));
 
+Template.list.can_delete = function () {
+    return !this.good;
+};
+
 Template.list.selected = function () {
     return Session.equals('list_id', this._id) ? 'selected' : '';
 };

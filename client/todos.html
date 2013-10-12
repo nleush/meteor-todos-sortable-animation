@@ -41,7 +41,9 @@
             <a class="list-name {{name_class}}" href="/{{_id}}">
                 {{name}}
             </a>
+            {{#if can_delete}}
             <div class="destroy"></div>
+            {{/if}}
         </div>
         {{/if}}
     </div>
@@ -71,7 +73,9 @@
         <input id="todo-input" type="text" value="{{text}}" />
       </div>
     {{else}}
+      {{#if can_delete}}
       <div class="destroy"></div>
+      {{/if}}
       <div class="display">
         <input class="check" name="markdone" type="checkbox" {{{done_checkbox}}} />
         <div class="todo-text">{{text}}</div>
