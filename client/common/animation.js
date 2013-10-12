@@ -29,14 +29,14 @@ Animation.prototype.allowTask = function(task) {
     return true;
 };
 
-Animation.prototype.startAnimation = function () {
+Animation.prototype.animationStarted = function () {
     if (this.animation == 0) {
         this.disableDragging();
     }
     this.animation++;
 };
 
-Animation.prototype.stopAnimation = function () {
+Animation.prototype.animationStopped = function () {
     this.animation--;
     if (this.animation == 0) {
 
@@ -51,21 +51,17 @@ Animation.prototype.stopAnimation = function () {
     }
 };
 
-Animation.prototype.stopDragging = function () {
+Animation.prototype.draggingStarted = function () {
     this.dragging = true;
 };
 
-Animation.prototype.stopDragging = function () {
+Animation.prototype.draggingStopped = function () {
     this.dragging = false;
 
     var task;
     while (task = this.tasksQueue.shift()) {
         task();
     }
-};
-
-Animation.prototype.stopDragging = function () {
-    this.dragging = true;
 };
 
 Animation.prototype.getObserverOptions = function() {
@@ -96,9 +92,9 @@ Animation.prototype.getObserverOptions = function() {
 
                 var $el = self.getItemById(document._id);
                 $el.hide();
-                self.startAnimation();
+                self.animationStarted();
                 $el.slideDown(function() {
-                    self.stopAnimation();
+                    self.animationStopped();
                 });
             }
         },
@@ -121,7 +117,7 @@ Animation.prototype.getObserverOptions = function() {
             var newItem = Meteor.render(function() {
                 return self.template(newDocument);
             });
-//console.log('change', oldItem, newItem);
+
             oldItem.after(newItem);
 
             // Destroy template.
@@ -151,10 +147,10 @@ Animation.prototype.getObserverOptions = function() {
             if (self.animationDisabled) {
                 task();
             } else {
-                self.startAnimation();
+                self.animationStarted();
                 oldItem.slideUp(function() {
                     task();
-                    self.stopAnimation();
+                    self.animationStopped();
                 });
             }
         },
@@ -180,17 +176,6 @@ Animation.prototype.getObserverOptions = function() {
                 moveOperation = function() {
                     self.appendItem(item);
                 };
-
-                /*
-// TODO: !!!!
-
-                var lastItem = items.find('li[data-id]:last');
-                if (lastItem.length && lastItem.attr('data-id') != document._id) {
-                    moveOperation = function() {
-                        lastItem.after(item);
-                    }
-                }
-                */
             }
 
             if (moveOperation && fromIndex != toIndex) {
@@ -217,7 +202,7 @@ Animation.prototype.getObserverOptions = function() {
                     }
 
                     function moveItem(item, targetItem, cb) {
-                        self.startAnimation();
+                        self.animationStarted();
 
                         item.animate({
                             top: targetItem.offset().top - item.offset().top,
@@ -229,7 +214,7 @@ Animation.prototype.getObserverOptions = function() {
 
                             cb && cb();
 
-                            self.stopAnimation();
+                            self.animationStopped();
                         });
                     }
 

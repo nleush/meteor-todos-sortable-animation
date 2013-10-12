@@ -109,7 +109,7 @@ Template.todos.rendered = function() {
         axis: "y",
         start: function(event, ui) {
             // [animation] Disable dragging.
-            animation.disableDragging();
+            animation.draggingStarted();
         },
         stop: function(event, ui) {
 
@@ -137,7 +137,7 @@ Template.todos.rendered = function() {
             }
 
             // [animation] Enable dragging.
-            animation.enableDragging();
+            animation.draggingStopped();
         }
     });
 
