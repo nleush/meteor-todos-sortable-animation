@@ -9,10 +9,10 @@ Following features added:
  3. Remove and add animation added.
  4. Added url routing for tags filtering (just for fun).
 
-I hope this feature will be added soon in Meteor in native way, as was written here: 
-[Previewing Meteor's new rendering engine: reactive sortable lists](http://www.meteor.com/blog/2013/09/13/previewing-meteors-new-rendering-engine-reactive-sortable-lists) by Avital Oliver
+I hope this feature will be added soon in Meteor as Avital Oliver written:
+[Previewing Meteor's new rendering engine: reactive sortable lists](http://www.meteor.com/blog/2013/09/13/previewing-meteors-new-rendering-engine-reactive-sortable-lists)
 
-I need it now, so had to implement something similar. I have only week of Meteor using experience, so any help or criticism will be appriciated.
+I need it now, so I had to implement something similar. I have not much of Meteor using experience, so any help or criticism will be appriciated.
 
 ## How to use step-by-step
  
