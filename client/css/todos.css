@@ -121,6 +121,9 @@ h3 {
 
 #lists .list {
     padding: 3px 6px;
+    position: relative;
+    border: 1px solid #ccc;
+    margin: 1px;
 }
 
 #lists .selected {
@@ -169,7 +172,6 @@ h3 {
     height: 50px;
     position: relative;
     overflow: hidden;
-    border: 1px solid #ccc;
     border: 1px solid #ccc;
     margin: 2px;
 }
