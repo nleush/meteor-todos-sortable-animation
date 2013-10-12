@@ -63,6 +63,10 @@ h3 {
     margin-bottom: 10px;
 }
 
+.loading {
+    padding: 10px;
+}
+
 .chat-message {
     margin: 5px;
     margin-top: 0px;

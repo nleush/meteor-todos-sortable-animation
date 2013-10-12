@@ -25,14 +25,18 @@
         <input type="text" id="new-chat-message-input" placeholder="type message..." />
     </div>
 
-    <div class="chat">
-        {{#each items}}
-            <div class="time">{{time}}</div>
-            <div class="chat-message">
-                {{text}}
-            </div>
-        {{/each}}
-    </div>
+    {{#if loading}}
+        <div class="loading">Loading...</div>
+    {{else}}
+        <div class="chat">
+            {{#each items}}
+                <div class="time">{{time}}</div>
+                <div class="chat-message">
+                    {{text}}
+                </div>
+            {{/each}}
+        </div>
+    {{/if}}
 
 </template>
 
