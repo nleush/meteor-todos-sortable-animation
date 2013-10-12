@@ -14,7 +14,27 @@
   <div id="side-pane">
     {{> lists}}
   </div>
+
+  <div id="chat">
+      {{> chat}}
+  </div>
 </body>
+
+<template name="chat">
+    <div id="createChatMessate">
+        <input type="text" id="new-chat-message-input" placeholder="type message..." />
+    </div>
+
+    <div class="chat">
+        {{#each items}}
+            <div class="time">{{time}}</div>
+            <div class="chat-message">
+                {{text}}
+            </div>
+        {{/each}}
+    </div>
+
+</template>
 
 <template name="lists">
   <h3>Todo Lists</h3>

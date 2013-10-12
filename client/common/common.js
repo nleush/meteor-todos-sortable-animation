@@ -3,7 +3,7 @@
 // Define Minimongo collections to match server/publish.js.
 Lists = new Meteor.Collection("lists");
 Todos = new Meteor.Collection("todos");
-TodosLocal = new Meteor.Collection(null);
+Chat = new Meteor.Collection("chat");
 
 // ID of currently selected list
 Session.setDefault('list_id', null);
@@ -29,6 +29,8 @@ listsHandle = Meteor.subscribe('lists', function () {
             Router.setList(list._id);
     }
 });
+
+chatHandle = Meteor.subscribe('chat');
 
 todosHandle = null;
 // Always be subscribed to the todos for the selected list.

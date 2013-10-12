@@ -1,5 +1,10 @@
 // Lists -- {name: String}
 Lists = new Meteor.Collection("lists");
+Chat = new Meteor.Collection("chat");
+
+Meteor.publish('chat', function () {
+    return Chat.find();
+});
 
 // Publish complete set of lists to all clients.
 Meteor.publish('lists', function () {

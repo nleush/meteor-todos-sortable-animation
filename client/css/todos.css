@@ -38,7 +38,7 @@ h3 {
     text-align: center;
 }
 
-#top-tag-filter, #main-pane, #side-pane, #bottom-pane {
+#top-tag-filter, #main-pane, #side-pane, #bottom-pane, #chat {
     position: absolute;
     left: 0;
     right: 0;
@@ -47,8 +47,40 @@ h3 {
     overflow: hidden;
 }
 
+#chat {
+    background: #ddd;
+    border-left: 1px solid #999;
+    bottom: 0px;
+    right: 0px;
+    left: auto;
+    width: 300px;
+    overflow-y: auto;
+}
+
+#new-chat-message-input {
+    width: 95%;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+.chat-message {
+    margin: 5px;
+    margin-top: 0px;
+    padding: 5px;
+    border: 1px solid #999;
+    background: #eee;
+}
+
+.chat .time {
+    padding-right: 5px;
+    font-size: xx-small;
+    font-style: italic;
+    text-align: right;
+}
+
 #top-tag-filter {
     left: 200px;
+    right: 300px;
     height: 44px;
     bottom: auto;
     background: #ddd;
@@ -63,6 +95,7 @@ h3 {
     top: 45px;
     bottom: 0;
     left: 220px;
+    right: 300px;
     overflow: auto;
 }
 
