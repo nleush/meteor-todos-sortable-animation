@@ -2,6 +2,8 @@
 
 This is modified [todos](http://www.meteor.com/examples/todos) Meteor example.
 
+Live demo on Meteor hosting: [http://todos-dnd-animated.meteor.com](http://todos-dnd-animated.meteor.com).
+
 Following features added:
 
  1. [sortable](http://jqueryui.com/sortable/) from jquery-ui used for drag-n-drop todos and todo lists.
