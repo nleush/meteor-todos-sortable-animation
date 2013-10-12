@@ -37,6 +37,7 @@ createSortableListAnimation = function(options) {
     $items.sortable({
         axis: "y",
         delay: 150,
+        cursor: "move",
         start: function(event, ui) {
             // [animation] Disable dragging.
             animation.draggingStarted();
