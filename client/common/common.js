@@ -79,6 +79,9 @@ getItemOrderInfo = function(ui) {
     var el = ui.item.get(0);
 
     var context = Spark.getDataContext(el);
+    if (!context) {
+        return null;
+    }
     var _id = context._id
     var oldOrder = context.order;
 

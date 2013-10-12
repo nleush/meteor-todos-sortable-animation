@@ -49,7 +49,7 @@ Template.lists.rendered = function() {
         cursor: Template.lists.lists(),
         onSortableStop: function(event, ui) {
             var info = getItemOrderInfo(ui);
-            if (info.oldOrder != info.order) {
+            if (info && info.oldOrder != info.order) {
                 Lists.update(info._id, {$set: {order: info.order}});
             }
         }

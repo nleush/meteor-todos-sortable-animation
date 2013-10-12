@@ -80,7 +80,7 @@ Template.todos.rendered = function() {
         cursor: Template.todos.todos(),
         onSortableStop: function(event, ui) {
             var info = getItemOrderInfo(ui);
-            if (info.oldOrder != info.order) {
+            if (info && info.oldOrder != info.order) {
                 Todos.update(info._id, {$set: {order: info.order}});
             }
         }
