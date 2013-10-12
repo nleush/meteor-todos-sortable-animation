@@ -48,26 +48,9 @@ Template.lists.rendered = function() {
         template: Template.list,
         cursor: Template.lists.lists(),
         onSortableStop: function(event, ui) {
-            var el = ui.item.get(0);
-
-            var context = Spark.getDataContext(el);
-            var _id = context._id
-            var oldOrder = context.order;
-
-            var before = ui.item.prev().get(0);
-            var after = ui.item.next().get(0);
-
-            var order;
-            if (!before && after) {
-                order = Spark.getDataContext(after).order - 1;
-            } else if (!after && before) {
-                order = Spark.getDataContext(before).order + 1;
-            } else if (after && before) {
-                order = (Spark.getDataContext(before).order + Spark.getDataContext(after).order) / 2;
-            }
-
-            if (oldOrder != order) {
-                Lists.update(_id, {$set: {order: order}});
+            var info = getItemOrderInfo(ui);
+            if (info.oldOrder != info.order) {
+                Lists.update(info._id, {$set: {order: info.order}});
             }
         }
     });
