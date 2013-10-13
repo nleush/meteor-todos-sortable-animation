@@ -1,3 +1,3 @@
 Template.users.count = function() {
-    return userPresence.find({}).count();
+    return Meteor.presences.find({}).count();
 };

@@ -57,6 +57,12 @@ h3 {
     float: left;
 }
 
+.hint {
+    font-size: small;
+    font-style: italic;
+    margin-top: 3px;
+}
+
 #chat {
     top: 40px;
     background: #ddd;
