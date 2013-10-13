@@ -1,5 +1,10 @@
 // if the database is empty on server start, create some sample data.
 Meteor.startup(function () {
+
+    // Clear base on startup.
+    Todos.remove({});
+    Lists.remove({});
+
   if (Lists.find().count() === 0) {
     var data = [
       {name: "Meteor Principles",
@@ -55,14 +60,4 @@ Meteor.startup(function () {
       }
     }
   }
-
-    Todos.find().forEach(function(todo) {
-
-        var MAX = 4;
-
-        if (todo.tags.length > MAX) {
-            todo.tags = todo.tags.slice(0, MAX);
-            Todos.update({_id: todo._id}, todo);
-        }
-    });
 });
