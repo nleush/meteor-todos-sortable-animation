@@ -30,25 +30,26 @@ Session.setDefault('editing_listname', null);
 // When editing todo text, ID of the todo
 Session.setDefault('editing_itemname', null);
 
-var routeToDefault = function() {
+routeToDefault = function() {
     var list = Lists.findOne({}, {sort: {order: 1}});
-    if (list)
+
+    if (list) {
         Router.setList(list._id);
+    }
 }
 
 // Subscribe to 'lists' collection on startup.
 // Select a list once data has arrived.
 listsHandle = Meteor.subscribe('lists', function () {
-    if (!Session.get('list_id')) {
-        routeToDefault();
-    }
-});
-
-Deps.autorun(function() {
     var list_id = Session.get('list_id');
-    var list = Lists.findOne({_id: list_id});
-    if (!list) {
+
+    if (!list_id) {
         routeToDefault();
+    } else {
+        var count = Lists.find({_id: list_id}).count();
+        if (count == 0) {
+            routeToDefault();
+        }
     }
 });
 
