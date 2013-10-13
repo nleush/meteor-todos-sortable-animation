@@ -23,6 +23,8 @@ Template.lists.events(okCancelEvents(
                 return;
             }
 
+            text = text.substr(0, 30) + '...';
+
             var last = Lists.findOne({}, {sort: {order: -1}});
             var order = last ? last.order + 1 : 0;
             var id = Lists.insert({
@@ -32,7 +34,7 @@ Template.lists.events(okCancelEvents(
             Router.setList(id);
             evt.target.value = "";
         }
-    }));
+    }, true));
 
 Template.lists.rendered = function() {
 

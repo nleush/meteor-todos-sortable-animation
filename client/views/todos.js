@@ -42,7 +42,7 @@ Template.todos.events(okCancelEvents(
             });
             evt.target.value = '';
         }
-    }));
+    }, true));
 
 Template.todos.todos = function () {
     // Determine which todos to display in main pane,

@@ -28,7 +28,7 @@ Template.chat.events(okCancelEvents(
             });
             Meteor.call('refreshChatTime', _id);
         }
-    }));
+    }, true));
 
 Template.chat.rendered = function() {
 

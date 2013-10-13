@@ -58,12 +58,12 @@ Deps.autorun(function () {
 // Returns an event map that handles the "escape" and "return" keys and
 // "blur" events on a text input (given by selector) and interprets them
 // as "ok" or "cancel".
-okCancelEvents = function (selector, callbacks) {
+okCancelEvents = function (selector, callbacks, disabeFocusout) {
     var ok = callbacks.ok || function () {};
     var cancel = callbacks.cancel || function () {};
 
     var events = {};
-    events['keyup '+selector+', keydown '+selector+', focusout '+selector] =
+    events['keyup '+selector+', keydown '+selector + (disabeFocusout? '' : ', focusout '+selector)] =
         function (evt) {
             if (evt.type === "keydown" && evt.which === 27) {
                 // escape = cancel
