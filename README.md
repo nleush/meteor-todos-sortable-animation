@@ -109,9 +109,9 @@ Not actually issue but can be odd: if many changes occurs - only first of them w
 
 Also I want to implement following in next steps:
 
- 1. Add list remove button (with removing todos and redirecting other watching that clients).
- 2. Use [Iron Router](/EventedMind/iron-router).
- 3. Create animated popup for editing something.
+ 1. Use [Iron Router](/EventedMind/iron-router).
+ 2. Create animated popup for editing something.
+ 3. Generic mechanism to preserver rerendered templates state.
 
 ## Contribute
 
