@@ -50,17 +50,21 @@
     {{#if loading}}
         <div class="loading">Loading...</div>
     {{else}}
-        <div class="chat">
-            {{#each items}}
-                {{#if created_by_name}}<div class="user">{{created_by_name}} {{#if online}}[online]{{/if}}</div>{{/if}}
-                <div class="time">{{time}}</div>
-                <div class="chat-message">
-                    {{text}}
-                </div>
-            {{/each}}
+        <div class="chat s-items">
+
         </div>
     {{/if}}
 
+</template>
+
+<template name="chat_item">
+    <div data-id="{{_id}}">
+        {{#if created_by_name}}<div class="user">{{created_by_name}} {{#if online}}[online]{{/if}}</div>{{/if}}
+        <div class="time">{{time}}</div>
+        <div class="chat-message">
+            {{text}}
+        </div>
+    </div>
 </template>
 
 <template name="lists">
@@ -140,9 +144,11 @@
           <input type="text" id="edittag-input" value="" />
         </div>
       {{else}}
-        <div class="tag addtag">
-          +tag
-        </div>
+        {{#if allow_add_tag}}
+            <div class="tag addtag">
+              +tag
+            </div>
+        {{/if}}
       {{/if}}
     </div>
   </li>

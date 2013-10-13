@@ -10,6 +10,10 @@ Template.todo_item.tag_objs = function () {
     });
 };
 
+Template.todo_item.allow_add_tag = function () {
+    return !this.tags || this.tags.length < 4;
+};
+
 Template.todo_item.done_class = function () {
     return this.done ? 'done' : '';
 };

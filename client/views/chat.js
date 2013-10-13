@@ -9,22 +9,16 @@ Template.chat.items = function() {
     });
 };
 
-Template.chat.time = function() {
-    return moment(this.timestamp).format('hh:mm:ss');
-};
-
-Template.chat.online = function() {
-    var presence = Meteor.presences.findOne({
-        userId: this.created_by
-    });
-    return !!presence;
-};
+var MAX_CHAT = 600;
 
 Template.chat.events(okCancelEvents(
     '#new-chat-message-input',
     {
         ok: function (value, evt) {
             evt.target.value = '';
+            if (value.length > MAX_CHAT) {
+                value = value.substr(0, 600) + '... [too big message trimmed]';
+            }
             var user = Meteor.user();
             var _id = Chat.insert({
                 created_by: user._id,
@@ -35,3 +29,31 @@ Template.chat.events(okCancelEvents(
             Meteor.call('refreshChatTime', _id);
         }
     }));
+
+Template.chat.rendered = function() {
+
+    var items = this.find('.s-items');
+    if (!items) {
+        return;
+    }
+
+    var $items = $(items);
+
+    // Prevent multiple `rendered` calls on one list.
+    // `rendered` called each time after `items.append`. Solve this by trigger.
+    if (this.renderHacked) {
+        return;
+    }
+    this.renderHacked = true;
+
+    // [animation] Init animation.
+    var animation = createSortableListAnimation({
+        el: 'div',
+        $items: $items,
+        template: Template.chat_item,
+        cursor: Template.chat.items(),
+        animationSpeed: 200
+    });
+
+    this.handle = animation.observerHandle;
+};

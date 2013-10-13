@@ -5,14 +5,20 @@ createSortableListAnimation = function(options) {
     var cursor = options.cursor;
     var el = options.el || 'li'
     var onSortableStop = options.onSortableStop;
+    var animationSpeed = options.animationSpeed;
 
     var animation = new Animation({
         template: template,
+        animationSpeed: animationSpeed,
         disableDragging: function() {
-            $items.sortable("option", "disabled", true);
+            if (onSortableStop) {
+                $items.sortable("option", "disabled", true);
+            }
         },
         enableDragging: function() {
-            $items.sortable("option", "disabled", false);
+            if (onSortableStop) {
+                $items.sortable("option", "disabled", false);
+            }
         },
         getNthItem: function(n) {
             return $items.find('>' + el + ':nth("' + n + '")');
@@ -33,23 +39,25 @@ createSortableListAnimation = function(options) {
     animation.observerHandle = cursor.observe(observer);
     animation.enableAddingAnimation = true;
 
-    // Init sortable.
-    $items.sortable({
-        axis: "y",
-        delay: 150,
-        cursor: "move",
-        start: function(event, ui) {
-            // [animation] Disable dragging.
-            animation.draggingStarted();
-        },
-        stop: function(event, ui) {
-            onSortableStop(event, ui);
+    if (onSortableStop) {
+        // Init sortable.
+        $items.sortable({
+            axis: "y",
+            delay: 150,
+            cursor: "move",
+            start: function(event, ui) {
+                // [animation] Disable dragging.
+                animation.draggingStarted();
+            },
+            stop: function(event, ui) {
+                onSortableStop(event, ui);
 
-            // [animation] Enable dragging.
-            animation.draggingStopped();
-        }
-    });
-    $items.disableSelection();
+                // [animation] Enable dragging.
+                animation.draggingStopped();
+            }
+        });
+        $items.disableSelection();
+    }
 
     return animation;
 };
@@ -72,6 +80,7 @@ Animation = function(options) {
     this.getItemIndex = options.getItemIndex;
     this.getItemById = options.getItemById;
     this.appendItem = options.appendItem;
+    this.animationSpeed = options.animationSpeed || 400;
 };
 
 Animation.prototype.allowTask = function(task) {
@@ -149,7 +158,7 @@ Animation.prototype.getObserverOptions = function() {
                 var $el = self.getItemById(document._id);
                 $el.hide();
                 self.animationStarted();
-                $el.slideDown(function() {
+                $el.slideDown(self.animationSpeed, function() {
                     self.animationStopped();
                 });
             }
@@ -204,7 +213,7 @@ Animation.prototype.getObserverOptions = function() {
                 task();
             } else {
                 self.animationStarted();
-                oldItem.slideUp(function() {
+                oldItem.slideUp(self.animationSpeed, function() {
                     task();
                     self.animationStopped();
                 });
@@ -265,7 +274,7 @@ Animation.prototype.getObserverOptions = function() {
                         item.animate({
                             top: targetItem.offset().top - item.offset().top,
                             left: targetItem.offset().left - item.offset().left
-                        } , 500 , "swing", function() {
+                        } , self.animationSpeed , "swing", function() {
 
                             item.css('position', positionCss);
                             item.css('top', '0');
