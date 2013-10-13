@@ -55,4 +55,14 @@ Meteor.startup(function () {
       }
     }
   }
+
+    Todos.find().forEach(function(todo) {
+
+        var MAX = 4;
+
+        if (todo.tags.length > MAX) {
+            todo.tags = todo.tags.slice(0, MAX);
+            Todos.update({_id: todo._id}, todo);
+        }
+    });
 });
