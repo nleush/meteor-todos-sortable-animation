@@ -3,6 +3,19 @@
 </head>
 
 <body>
+
+<div id="header">
+    <div>
+        <h4>Animation with sortable demo</h4>
+    </div>
+    <div>
+        <a href="https://github.com/nleush/meteor-todos-sortable-animation" target="_blank">source code</a>
+    </div>
+    <div>
+        {{> users }}
+    </div>
+</div>
+
   <div id="top-tag-filter">
     {{> tag_filter}}
   </div>
@@ -20,7 +33,13 @@
   </div>
 </body>
 
+<template name="users">
+    Users online: {{count}}
+</template>
+
 <template name="chat">
+    <h3>Chat</h3>
+
     <div id="createChatMessate">
         <input type="text" id="new-chat-message-input" placeholder="type message..." />
     </div>

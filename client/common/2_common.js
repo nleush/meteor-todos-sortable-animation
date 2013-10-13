@@ -14,6 +14,7 @@ Meteor.startup(function() {
 Lists = new Meteor.Collection("lists");
 Todos = new Meteor.Collection("todos");
 Chat = new Meteor.Collection("chat");
+userPresence = new Meteor.Collection("userPresence");
 
 // ID of currently selected list
 Session.setDefault('list_id', null);
@@ -41,6 +42,7 @@ listsHandle = Meteor.subscribe('lists', function () {
 });
 
 chatHandle = Meteor.subscribe('chat');
+Meteor.subscribe('userPresence');
 
 todosHandle = null;
 // Always be subscribed to the todos for the selected list.
