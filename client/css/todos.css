@@ -196,9 +196,12 @@ h3 {
 }
 
 #lists .list-name {
-    cursor: pointer;
     color: black;
     text-decoration: none;
+}
+
+#lists .list {
+    cursor: pointer;
 }
 
 #createList {
@@ -231,12 +234,17 @@ h3 {
 }
 
 #item-list .todo {
+    cursor: move;
     display: block;
     height: 50px;
     position: relative;
     overflow: hidden;
     border: 1px solid #ccc;
     margin: 2px;
+}
+
+#item-list .todo .todo-text {
+    cursor: pointer;
 }
 
 #item-list .todo .destroy {
@@ -256,6 +264,7 @@ h3 {
     padding-top: 18px;
     line-height: 1;
 }
+
 
 #todo-input {
     width: 300px;
