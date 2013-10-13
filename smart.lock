@@ -3,7 +3,8 @@
   "dependencies": {
     "basePackages": {
       "jquery-ui": {},
-      "moment": {}
+      "moment": {},
+      "presence": {}
     },
     "packages": {
       "jquery-ui": {
@@ -15,6 +16,11 @@
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.2.1",
         "commit": "9ee12e714afe56b189f53076447b7b54f3012065"
+      },
+      "presence": {
+        "git": "https://github.com/tmeasday/meteor-presence.git",
+        "tag": "v0.2.4",
+        "commit": "e59a12739685972c970f70956c4d3e78c31818ec"
       }
     }
   }

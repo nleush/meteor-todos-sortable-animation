@@ -18,7 +18,10 @@ Template.chat.events(okCancelEvents(
     {
         ok: function (value, evt) {
             evt.target.value = '';
+            var user = Meteor.user();
             var _id = Chat.insert({
+                created_by: user._id,
+                created_by_name: user.username,
                 text: value,
                 timestamp: new Date().getTime()
             });

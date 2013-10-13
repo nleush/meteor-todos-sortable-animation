@@ -1,4 +1,14 @@
-// Client-side JavaScript, bundled and sent to client.
+Meteor.startup(function() {
+    Deps.autorun(function() {
+        var user = Meteor.user();
+
+        if (!user) {
+            Meteor.call('initUser', function(error, id) {
+                Meteor.loginWithPassword(id, 'password');
+            });
+        }
+    });
+});
 
 // Define Minimongo collections to match server/publish.js.
 Lists = new Meteor.Collection("lists");

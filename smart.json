@@ -1,6 +1,7 @@
 {
   "packages": {
     "jquery-ui": {},
-    "moment": {}
+    "moment": {},
+    "presence": {}
   }
 }

@@ -4,12 +4,14 @@
 # but you can also edit it by hand.
 
 standard-app-packages
-underscore
-backbone
-spiderable
-jquery
-preserve-inputs
 insecure
+preserve-inputs
+backbone
+jquery
 
 jquery-ui
 moment
+accounts-base
+accounts-password
+
+presence

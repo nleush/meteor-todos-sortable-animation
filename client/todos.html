@@ -30,6 +30,7 @@
     {{else}}
         <div class="chat">
             {{#each items}}
+                {{#if created_by_name}}<div class="user">{{created_by_name}}</div>{{/if}}
                 <div class="time">{{time}}</div>
                 <div class="chat-message">
                     {{text}}

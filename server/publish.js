@@ -27,4 +27,3 @@ Meteor.publish('todos', function (list_id) {
     check(list_id, String);
     return Todos.find({list_id: list_id});
 });
-
