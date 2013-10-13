@@ -13,6 +13,13 @@ Template.chat.time = function() {
     return moment(this.timestamp).format('hh:mm:ss');
 };
 
+Template.chat.online = function() {
+    var presence = Meteor.presences.findOne({
+        userId: this.created_by
+    });
+    return !!presence;
+};
+
 Template.chat.events(okCancelEvents(
     '#new-chat-message-input',
     {
