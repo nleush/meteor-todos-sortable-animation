@@ -18,10 +18,11 @@
         {{> users }}
     </div>
     <div class="head-right">
-        {{> user}}
+        {{> username_button}}
     </div>
 
     {{> googleAnalytics}}
+    {{> username_dialog}}
 </div>
 
   <div id="top-tag-filter">
@@ -45,8 +46,17 @@
     Users online: {{count}}
 </template>
 
-<template name="user">
-    {{#if currentUser}}Your nickname: <strong>{{currentUser.username}}</strong> <a href="#" id="change-username">change</a>{{/if}}
+<template name="username_button">
+    {{#if currentUser}}Your nickname: <strong>{{currentUser.username}}</strong> <a href="#" class="change-username-btn">change</a>{{/if}}
+
+</template>
+
+<template name="username_dialog">
+    <div id="username-dialog" title="Change username">
+        <div class="edit">
+            <input class="" id="username-input" type="text" value="{{currentUser.username}}" />
+        </div>
+    </div>
 </template>
 
 <template name='googleAnalytics'>

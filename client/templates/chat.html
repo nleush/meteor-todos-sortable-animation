@@ -17,7 +17,7 @@
 
 <template name="chat_item">
     <div data-id="{{_id}}">
-        {{#if created_by_name}}<div class="user">{{created_by_name}} {{#if online}}[online]{{/if}}</div>{{/if}}
+        <div class="user">{{username}} {{#if online}}[online]{{/if}}</div>
         <div class="time">{{time}}</div>
         <div class="chat-message">
             {{text}}
