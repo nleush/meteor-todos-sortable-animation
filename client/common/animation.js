@@ -203,6 +203,7 @@ Animation.prototype.getObserverOptions = function() {
             var oldItem = self.getItemById(oldDocument._id);
 
             var task = function() {
+                // TODO: if use oldItem - can be bug with duplication.
                 var oldItem2 = self.getItemById(oldDocument._id);
 
                 // Destroy template.

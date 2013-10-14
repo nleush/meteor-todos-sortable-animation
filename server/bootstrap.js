@@ -5,6 +5,20 @@ var reinit = function() {
     Todos.remove({});
     Lists.remove({});
 
+    // Remove old chats, leaving last 200 items.
+    var lastChat = Chat.findOne({}, {
+        sort: {timestamp: -1},
+        limit: 1,
+        skip: 200
+    });
+    if (lastChat) {
+        Chat.remove({
+            timestamp: {
+                $lt: lastChat.timestamp
+            }
+        });
+    }
+
     if (Lists.find().count() === 0) {
         var data = [
             {name: "Meteor Principles",
