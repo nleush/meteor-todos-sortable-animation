@@ -23,7 +23,9 @@ Template.lists.events(okCancelEvents(
                 return;
             }
 
-            text = text.substr(0, 30) + '...';
+            if (text.length > 30) {
+                text = text.substr(0, 30) + '...';
+            }
 
             var last = Lists.findOne({}, {sort: {order: -1}});
             var order = last ? last.order + 1 : 0;
