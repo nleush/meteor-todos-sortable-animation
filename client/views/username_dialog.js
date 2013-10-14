@@ -8,6 +8,7 @@ var updateUsername = function($input) {
     var existing = Meteor.users.findOne({username: value, _id: {$ne: Meteor.userId()}});
 
     if (existing) {
+        alert('Nickname used by another user :(');
         return;
     }
 

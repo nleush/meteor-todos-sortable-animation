@@ -15,6 +15,8 @@ Lists = new Meteor.Collection("lists");
 Todos = new Meteor.Collection("todos");
 Chat = new Meteor.Collection("chat");
 
+Meteor.subscribe("userData");
+
 // ID of currently selected list
 Session.setDefault('list_id', null);
 
