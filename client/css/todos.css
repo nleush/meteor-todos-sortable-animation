@@ -57,6 +57,10 @@ h3 {
     float: left;
 }
 
+#header .head-right {
+    float: right;
+}
+
 .hint {
     font-size: small;
     font-style: italic;

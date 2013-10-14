@@ -55,6 +55,9 @@ Lists.allow({
         } else {
             return true;
         }
+    },
+    remove: function(userId, doc) {
+        return true;
     }
 });
 
@@ -75,6 +78,9 @@ Todos.allow({
         }
 
         return true;
+    },
+    remove: function(userId, doc) {
+        return true;
     }
 });
 
@@ -84,11 +90,16 @@ Chat.allow({
             return false;
         }
         return true;
-    },
-    update: function(userId, doc) {
-        if (doc.text.length > 700) {
-            return false;
-        }
-        return true;
     }
 });
+
+Meteor.publish("userData", function () {
+    return Meteor.users.find({}, {fields: {'username': 1}});
+});
+
+Meteor.users.allow({
+    update: function(userId, doc) {
+        return doc._id == userId;
+    }
+});
+

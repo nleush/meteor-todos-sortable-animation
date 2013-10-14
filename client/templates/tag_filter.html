@@ -1,0 +1,10 @@
+<template name="tag_filter">
+    <div id="tag-filter" class="tag-list">
+        <div class="label">Show:</div>
+        {{#each tags}}
+        <div class="tag {{selected}}">
+            {{tag_text}} <span class="count">({{count}})</span>
+        </div>
+        {{/each}}
+    </div>
+</template>

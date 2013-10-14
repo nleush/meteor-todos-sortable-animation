@@ -1,0 +1,3 @@
+Template.user.rendered = function() {
+
+};
