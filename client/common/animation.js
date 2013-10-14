@@ -107,7 +107,7 @@ Animation.prototype.animationStopped = function () {
 
         this.animationDisabled = true;
         var task;
-        while(task = this.animationQueue.pop()) {
+        while(task = this.animationQueue.shift()) {
             task();
         }
         this.animationDisabled = false;
