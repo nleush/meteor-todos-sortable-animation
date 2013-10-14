@@ -15,3 +15,5 @@ accounts-base
 accounts-password
 
 presence
+
+iron-router

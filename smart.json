@@ -2,6 +2,7 @@
   "packages": {
     "jquery-ui": {},
     "moment": {},
-    "presence": {}
+    "presence": {},
+    "iron-router": {}
   }
 }

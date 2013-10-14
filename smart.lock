@@ -4,7 +4,8 @@
     "basePackages": {
       "jquery-ui": {},
       "moment": {},
-      "presence": {}
+      "presence": {},
+      "iron-router": {}
     },
     "packages": {
       "jquery-ui": {
@@ -19,8 +20,13 @@
       },
       "presence": {
         "git": "https://github.com/tmeasday/meteor-presence.git",
-        "tag": "v0.2.4",
-        "commit": "e59a12739685972c970f70956c4d3e78c31818ec"
+        "tag": "v0.3.0",
+        "commit": "bc619727e46ee46573ec319f73f95f8be0d3247c"
+      },
+      "iron-router": {
+        "git": "https://github.com/EventedMind/iron-router.git",
+        "tag": "v0.5.4",
+        "commit": "3e0e22ff85630b7503d0daa1538c6d90abb84020"
       }
     }
   }

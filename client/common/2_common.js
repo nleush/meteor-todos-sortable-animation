@@ -30,13 +30,22 @@ Session.setDefault('editing_listname', null);
 // When editing todo text, ID of the todo
 Session.setDefault('editing_itemname', null);
 
+Router.map(TodosRouter);
+Router.setList = function (list_id, tag) {
+    if (tag) {
+        Router.go("dashboard-list-tag", {list_id: list_id, tag: tag});
+    } else {
+        Router.go("dashboard-list", {list_id: list_id});
+    }
+}
+
 routeToDefault = function() {
     var list = Lists.findOne({}, {sort: {order: 1}});
 
     if (list) {
         Router.setList(list._id);
     }
-}
+};
 
 // Subscribe to 'lists' collection on startup.
 // Select a list once data has arrived.
@@ -73,6 +82,8 @@ Deps.autorun(function () {
     } else
         todosHandle = null;
 });
+
+
 
 ////////// Helpers for in-place editing //////////
 
