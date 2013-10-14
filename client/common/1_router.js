@@ -5,10 +5,10 @@ TodosRouter = function() {
         path: '/:list_id',
         handler: function() {
             var list_id = this.params.list_id;
-
+            var oldTagFilter = Session.get("tag_filter");
             var oldList = Session.get("list_id");
 
-            if (oldList !== list_id ) {
+            if (oldList !== list_id || oldTagFilter !== null) {
 
                 Session.set("list_id", list_id);
                 Session.set("tag_filter", null);
