@@ -1,5 +1,7 @@
 var reinit = function() {
+
     // Clear base on startup.
+
     Todos.remove({});
     Lists.remove({});
 
@@ -41,7 +43,6 @@ var reinit = function() {
             }
         ];
 
-        var timestamp = (new Date()).getTime();
         for (var i = 0; i < data.length; i++) {
             var list_id = Lists.insert({
                 name: data[i].name,
@@ -65,5 +66,5 @@ Meteor.startup(function () {
 
     reinit();
 
-    //Meteor.setInterval(reinit, 2000/*1000 * 60 * 30*/);
+    Meteor.setInterval(reinit, 1000 * 60 * 30);
 });

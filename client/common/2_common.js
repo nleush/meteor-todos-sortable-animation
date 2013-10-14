@@ -53,6 +53,14 @@ listsHandle = Meteor.subscribe('lists', function () {
     }
 });
 
+Deps.autorun(function() {
+    var list_id = Session.get('list_id');
+    var count = Lists.find({_id: list_id}).count();
+    if (count == 0) {
+        routeToDefault();
+    }
+});
+
 chatHandle = Meteor.subscribe('chat');
 Meteor.subscribe('userPresence');
 

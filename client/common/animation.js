@@ -135,6 +135,7 @@ Animation.prototype.getObserverOptions = function() {
 
     var observer = {
         addedAt: function(document, atIndex, before) {
+            // TODO: fix lists order on reinit data.
 
             if (!self.allowTask(function() {
                 observer.addedAt(document, atIndex, before);
@@ -150,7 +151,7 @@ Animation.prototype.getObserverOptions = function() {
                 var beforeItem = self.getItemById(before);
                 beforeItem.before(todoItem);
             } else {
-                self.appendItem(todoItem)
+                self.appendItem(todoItem);
             }
 
             if (self.enableAddingAnimation && !self.animationDisabled) {
@@ -202,11 +203,13 @@ Animation.prototype.getObserverOptions = function() {
             var oldItem = self.getItemById(oldDocument._id);
 
             var task = function() {
+                var oldItem2 = self.getItemById(oldDocument._id);
+
                 // Destroy template.
                 // https://github.com/meteor/meteor/issues/392
-                Spark.finalize(oldItem[0]);
+                Spark.finalize(oldItem2[0]);
 
-                oldItem.remove();
+                oldItem2.remove();
             };
 
             if (self.animationDisabled) {
