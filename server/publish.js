@@ -38,3 +38,57 @@ Meteor.publish('userPresence', function() {
     // templates constantly re-render (and use bandwidth)
     return Meteor.presences.find(filter, {fields: {state: true, userId: true}});
 });
+
+
+// TODO: validate all fields.
+
+Lists.allow({
+    insert: function(userId, doc) {
+        if (doc.name.length > 33) {
+            return false;
+        }
+        return Lists.find().count() < 20;
+    },
+    update: function(userId, doc) {
+        if (doc.name.length > 33) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+});
+
+Todos.allow({
+    insert: function(userId, doc) {
+        if (doc.text.length > 60) {
+            return false;
+        }
+        if (Lists.find({_id: doc.list_id}).count() == 0) {
+            return false;
+        }
+
+        return Todos.find({list_id: doc.list_id}).count() < 20;
+    },
+    update: function(userId, doc) {
+        if (doc.doc.text.length > 60) {
+            return false;
+        }
+
+        return true;
+    }
+});
+
+Chat.allow({
+    insert: function(userId, doc) {
+        if (doc.text.length > 700) {
+            return false;
+        }
+        return true;
+    },
+    update: function(userId, doc) {
+        if (doc.doc.text.length > 700) {
+            return false;
+        }
+        return true;
+    }
+});

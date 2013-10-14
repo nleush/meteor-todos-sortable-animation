@@ -24,7 +24,7 @@ Template.todos.events(okCancelEvents(
             var count = Todos.find({
                 list_id: Session.get('list_id')
             }).count();
-            if (count > 20) {
+            if (count >= 20) {
                 alert('Sorry, too much todos for demo! But you still can try console... ;)');
                 evt.target.value = "";
                 return;

@@ -17,7 +17,7 @@ Template.lists.events(okCancelEvents(
 
             // Prevent from spam.
             var count = Lists.find({}).count();
-            if (count > 20) {
+            if (count >= 20) {
                 alert('Sorry, too much lists for demo! But you still can try console... ;)');
                 evt.target.value = "";
                 return;
