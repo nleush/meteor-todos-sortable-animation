@@ -70,7 +70,7 @@ Todos.allow({
         return Todos.find({list_id: doc.list_id}).count() < 20;
     },
     update: function(userId, doc) {
-        if (doc.doc.text.length > 60) {
+        if (doc.text.length > 60) {
             return false;
         }
 
@@ -86,7 +86,7 @@ Chat.allow({
         return true;
     },
     update: function(userId, doc) {
-        if (doc.doc.text.length > 700) {
+        if (doc.text.length > 700) {
             return false;
         }
         return true;
