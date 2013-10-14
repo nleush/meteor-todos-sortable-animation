@@ -30,6 +30,9 @@ Session.setDefault('editing_listname', null);
 // When editing todo text, ID of the todo
 Session.setDefault('editing_itemname', null);
 
+// When edit username popup.
+Session.setDefault('editing_username', null);
+
 Router.map(TodosRouter);
 Router.setList = function (list_id, tag) {
     if (tag) {

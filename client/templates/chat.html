@@ -1,0 +1,26 @@
+<template name="chat">
+    <h3>Chat</h3>
+
+    <div id="createChatMessate">
+        <input type="text" id="new-chat-message-input" placeholder="type message..." />
+    </div>
+
+    {{#if loading}}
+    <div class="loading">Loading...</div>
+    {{else}}
+    <div class="chat s-items">
+
+    </div>
+    {{/if}}
+
+</template>
+
+<template name="chat_item">
+    <div data-id="{{_id}}">
+        <div class="user">{{username}} {{#if online}}[online]{{/if}}</div>
+        <div class="time">{{time}}</div>
+        <div class="chat-message">
+            {{text}}
+        </div>
+    </div>
+</template>

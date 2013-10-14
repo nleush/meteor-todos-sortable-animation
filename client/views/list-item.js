@@ -7,7 +7,7 @@ Template.list.destroyed = function() {
 };
 
 Template.list.events({
-    'click .list': function (evt) {
+    'click .list': function (evt, tmpl) {
         // prevent clicks on <a> from refreshing the page.
         evt.preventDefault();
 
@@ -16,7 +16,7 @@ Template.list.events({
         if ($el.hasClass('destroy')) {
 
             var count = Todos.find({
-                list_id: Session.get('list_id')
+                list_id: tmpl.list_id
             }).count();
             if (count) {
                 return alert('Only empty list can be removed! Remove all todos first.');

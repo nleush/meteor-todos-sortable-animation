@@ -8,3 +8,12 @@ Template.chat_item.online = function() {
     });
     return !!presence;
 };
+
+Template.chat_item.username = function() {
+    var user = Meteor.users.findOne({_id: this.created_by});
+    if (user) {
+        return user.username;
+    } else {
+        return this.created_by_name;
+    }
+}
