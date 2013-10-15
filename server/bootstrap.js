@@ -73,6 +73,16 @@ var reinit = function() {
             }
         }
     }
+
+    if (Tiles.find().count() === 0) {
+        for (var j = 0; j < 200; j++) {
+            Tiles.insert({
+                order: j,
+                label: j
+            });
+        }
+    }
+
 };
 
 // if the database is empty on server start, create some sample data.

@@ -1,6 +1,7 @@
 // Lists -- {name: String}
 Lists = new Meteor.Collection("lists");
 Chat = new Meteor.Collection("chat");
+Tiles = new Meteor.Collection("tiles");
 
 Meteor.publish('chat', function () {
     return Chat.find({}, {
@@ -86,11 +87,19 @@ Chat.allow({
             return false;
         }
         return true;
+    },
+    remove: function(userId, doc) {
+        var user = Meteor.users.findOne(userId);
+        return user.username == "admin";
     }
 });
 
 Meteor.publish("userData", function () {
     return Meteor.users.find({}, {fields: {'username': 1}});
+});
+
+Meteor.publish("Tiles", function () {
+    return Tiles.find({});
 });
 
 Meteor.users.allow({
@@ -107,3 +116,8 @@ Meteor.users.allow({
     }
 });
 
+Tiles.allow({
+    update: function(userId, doc, fieldNames, modifier) {
+        return fieldNames.length == 1 && fieldNames[0] == "order";
+    }
+});

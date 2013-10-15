@@ -11,6 +11,7 @@ Template.online_users_dialog.users = function() {
 Template.online_users_dialog.rendered = function() {
 
     var $dialog = this.$dialog = $(this.find("#online-users-dialog"));
+    var self = this;
 
     Deps.autorun(function() {
         var show = Session.get("online_users_dialog");
@@ -20,7 +21,11 @@ Template.online_users_dialog.rendered = function() {
 
                 if (!$dialog.attr("inited")) {
 
+                    // Not works.
+                    self.rendered && self.rendered.dialog('destroy');
+
                     $dialog.attr("inited", true);
+                    self.rendered = $dialog;
 
                     $dialog.dialog({
                         autoOpen: false,

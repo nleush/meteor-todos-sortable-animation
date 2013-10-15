@@ -21,6 +21,9 @@
         <div class="time">{{time}}</div>
         <div class="chat-message">
             {{text}}
+            {{#if can_delete}}
+            <a href="#" class="s-delete">[del]</a>
+            {{/if}}
         </div>
     </div>
 </template>

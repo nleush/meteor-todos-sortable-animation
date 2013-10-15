@@ -6,6 +6,7 @@ createSortableListAnimation = function(options) {
     var el = options.el || 'li'
     var onSortableStop = options.onSortableStop;
     var animationSpeed = options.animationSpeed;
+    var sortableOptions = options.sortableOptions;
 
     var animation = new Animation({
         template: template,
@@ -41,9 +42,10 @@ createSortableListAnimation = function(options) {
 
     if (onSortableStop) {
         // Init sortable.
-        $items.sortable({
+
+        var options = {
             axis: "y",
-            delay: 150,
+            delay: 100,
             cursor: "move",
             start: function(event, ui) {
                 // [animation] Disable dragging.
@@ -55,7 +57,9 @@ createSortableListAnimation = function(options) {
                 // [animation] Enable dragging.
                 animation.draggingStopped();
             }
-        });
+        };
+
+        $items.sortable(_.extend(options, sortableOptions));
         $items.disableSelection();
     }
 

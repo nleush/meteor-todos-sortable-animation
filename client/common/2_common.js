@@ -14,8 +14,10 @@ Meteor.startup(function() {
 Lists = new Meteor.Collection("lists");
 Todos = new Meteor.Collection("todos");
 Chat = new Meteor.Collection("chat");
+Tiles = new Meteor.Collection("tiles");
 
 Meteor.subscribe("userData");
+Meteor.subscribe("Tiles");
 
 // ID of currently selected list
 Session.setDefault('list_id', null);
@@ -42,7 +44,7 @@ Router.setList = function (list_id, tag) {
     } else {
         Router.go("dashboard-list", {list_id: list_id});
     }
-}
+};
 
 routeToDefault = function() {
     var list = Lists.findOne({}, {sort: {order: 1}});
@@ -55,6 +57,7 @@ routeToDefault = function() {
 // Subscribe to 'lists' collection on startup.
 // Select a list once data has arrived.
 listsHandle = Meteor.subscribe('lists', function () {
+    /*
     var list_id = Session.get('list_id');
 
     if (!list_id) {
@@ -65,8 +68,9 @@ listsHandle = Meteor.subscribe('lists', function () {
             routeToDefault();
         }
     }
+    */
 });
-
+/*
 Deps.autorun(function() {
     var list_id = Session.get('list_id');
     var count = Lists.find({_id: list_id}).count();
@@ -74,7 +78,7 @@ Deps.autorun(function() {
         routeToDefault();
     }
 });
-
+*/
 chatHandle = Meteor.subscribe('chat');
 Meteor.subscribe('userPresence');
 

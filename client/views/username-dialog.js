@@ -40,7 +40,11 @@ Template.username_dialog.rendered = function() {
 
                 if (!$dialog.attr("inited")) {
 
+                    // Not works.
+                    self.rendered && self.rendered.dialog('destroy');
+
                     $dialog.attr("inited", true);
+                    self.rendered = $dialog;
 
                     $dialog.dialog({
                         autoOpen: false,
@@ -84,6 +88,7 @@ Template.username_dialog.rendered = function() {
         }
     });
 };
+
 
 Template.username_dialog.events({
     'keyup #username-input': function(evt, tmpl) {
