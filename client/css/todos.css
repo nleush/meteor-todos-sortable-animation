@@ -379,3 +379,6 @@ h3 {
     padding: 15px;
 }
 
+.chat-message .s-delete {
+    float: right;
+}
