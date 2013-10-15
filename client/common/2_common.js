@@ -65,7 +65,7 @@ Deps.autorun(function() {
     if (list_id) {
 
         // Route if only current page is list.
-        if (document.location.indexOf(path) == -1) {
+        if (document.location.href.indexOf(path) == -1) {
             return;
         }
 
