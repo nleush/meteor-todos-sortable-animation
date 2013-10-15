@@ -21,8 +21,9 @@
         {{> username_button}}
     </div>
 
-    {{> googleAnalytics}}
+    {{> google_analytics}}
     {{> username_dialog}}
+    {{> online_users_dialog}}
 </div>
 
   <div id="top-tag-filter">
@@ -43,7 +44,7 @@
 </body>
 
 <template name="users">
-    Users online: {{count}}
+    Users online: {{count}} <a class="show-online-users" href="#">show all</a>
 </template>
 
 <template name="username_button">
@@ -54,10 +55,26 @@
 <template name="username_dialog">
     <div id="username-dialog" title="Change nickname">
         <div class="edit">
+            {{#isolate}}
             <input class="" id="username-input" type="text" value="{{currentUser.username}}" />
+            {{/isolate}}
         </div>
     </div>
 </template>
 
-<template name='googleAnalytics'>
+<template name="online_users_dialog">
+    <div id="online-users-dialog" title="Online users">
+        {{#each users}}
+            {{> online_user }}
+        {{/each}}
+    </div>
+</template>
+
+<template name="online_user">
+    <div>
+        {{username}}
+    </div>
+</template>
+
+<template name='google_analytics'>
 </template>

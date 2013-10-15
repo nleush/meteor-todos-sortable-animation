@@ -49,8 +49,8 @@ Lists.allow({
         }
         return Lists.find().count() < 20;
     },
-    update: function(userId, doc) {
-        if (doc.name.length > 33) {
+    update: function(userId, doc, fieldNames, modifier) {
+        if (modifier.$set.name && modifier.$set.name.length > 33) {
             return false;
         } else {
             return true;
@@ -72,11 +72,7 @@ Todos.allow({
 
         return Todos.find({list_id: doc.list_id}).count() < 20;
     },
-    update: function(userId, doc) {
-        if (doc.text.length > 60) {
-            return false;
-        }
-
+    update: function(userId, doc, fieldNames, modifier) {
         return true;
     },
     remove: function(userId, doc) {
@@ -98,8 +94,16 @@ Meteor.publish("userData", function () {
 });
 
 Meteor.users.allow({
-    update: function(userId, doc) {
-        return doc._id == userId;
+    update: function(userId, doc, fieldNames, modifier) {
+        if (fieldNames.length == 1 && fieldNames[0] == "username") {
+
+            if (modifier.$set.username.length > 14)
+                return false;
+
+            return doc._id == userId;
+        }
+
+        return false;
     }
 });
 

@@ -5,6 +5,11 @@ var updateUsername = function($input) {
         return;
     }
 
+    if (value.length > 14) {
+        alert('Too long nickname');
+        return;
+    }
+
     var existing = Meteor.users.findOne({username: value, _id: {$ne: Meteor.userId()}});
 
     if (existing) {
@@ -23,6 +28,11 @@ var updateUsername = function($input) {
 
 Template.username_dialog.rendered = function() {
 
+    if (this.$input) {
+        // Prevent dialog reinit.
+        return;
+    }
+
     var $input = this.$input = $(this.find("#username-input"));
 
     var $dialog = $(this.find("#username-dialog"));
@@ -30,6 +40,7 @@ Template.username_dialog.rendered = function() {
     $dialog.dialog({
         autoOpen: false,
         modal: true,
+        resizable: false,
         show: {
             effect: "scale",
             duration: 500

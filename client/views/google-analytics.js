@@ -1,4 +1,4 @@
-Template.googleAnalytics.rendered = function() {
+Template.google_analytics.rendered = function() {
     new GA('UA-44827114-1');
 };
 
