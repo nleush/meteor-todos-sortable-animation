@@ -10,42 +10,46 @@ Template.online_users_dialog.users = function() {
 
 Template.online_users_dialog.rendered = function() {
 
-    if (this.$dialog) {
-        // Prevent dialog reinit.
-        return;
-    }
-
     var $dialog = this.$dialog = $(this.find("#online-users-dialog"));
-
-    $dialog.dialog({
-        autoOpen: false,
-        modal: true,
-        resizable: false,
-        height: 500,
-        width: 200,
-        show: {
-            effect: "scale",
-            duration: 500
-        },
-        hide: {
-            effect: "scale",
-            duration: 500
-        },
-        close: function( event, ui ) {
-            Session.set("online_users_dialog", false);
-        }
-    });
 
     Deps.autorun(function() {
         var show = Session.get("online_users_dialog");
-        var opened = $dialog.dialog("isOpen");
+        var opened = $dialog.attr("opened");
         if (show) {
             if (!opened) {
+
+                if (!$dialog.attr("inited")) {
+
+                    $dialog.attr("inited", true);
+
+                    $dialog.dialog({
+                        autoOpen: false,
+                        modal: true,
+                        resizable: false,
+                        height: 500,
+                        width: 200,
+                        show: {
+                            effect: "scale",
+                            duration: 500
+                        },
+                        hide: {
+                            effect: "scale",
+                            duration: 500
+                        },
+                        close: function( event, ui ) {
+                            Session.set("online_users_dialog", false);
+                        }
+                    });
+                }
+
                 $dialog.dialog('open');
+
+                $dialog.attr("opened", true);
             }
         } else {
             if (opened) {
                 $dialog.dialog('close');
+                $dialog.removeAttr("opened");
             }
         }
     });

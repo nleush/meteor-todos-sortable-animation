@@ -69,14 +69,14 @@ Template.todos.rendered = function() {
 
     var $items = $(items);
 
-    var list_id = $items.attr('data-id');
+    //var list_id = $items.attr('data-id');
 
     // Prevent multiple `rendered` calls on one list.
     // `rendered` called each time after `items.append`. Solve this by trigger.
-    if (this.renderHackedFor == list_id) {
+    if ($items.attr('rendered')) {
         return;
     }
-    this.renderHackedFor = list_id;
+    $items.attr('rendered', true);
 
     // Stop previous observer.
     // If only tag changes subscription is kept alive.

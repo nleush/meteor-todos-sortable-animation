@@ -4,44 +4,38 @@
 
 <body>
 
-<div id="header">
-    <div>
-        <h4>Animation with sortable demo</h4>
-    </div>
-    <div class="hint">
-        try drag todos in two browser windows
-    </div>
-    <div>
-        <a href="https://github.com/nleush/meteor-todos-sortable-animation" target="_blank">source code</a>
-    </div>
-    <div>
-        {{> users }}
-    </div>
-    <div class="head-right">
-        {{> username_button}}
+</body>
+
+<template name="layout">
+    <div id="header">
+        <div>
+            <h4>Animation with sortable demo</h4>
+        </div>
+        <div class="hint">
+            try drag todos in two browser windows
+        </div>
+        <div>
+            <a href="https://github.com/nleush/meteor-todos-sortable-animation" target="_blank">source code</a>
+        </div>
+        <div>
+            {{> users }}
+        </div>
+        <div class="head-right">
+            {{> username_button}}
+        </div>
     </div>
 
-    {{> google_analytics}}
+    {{yield}}
+
+    <div id="chat">
+        {{> chat}}
+    </div>
+
     {{> username_dialog}}
     {{> online_users_dialog}}
-</div>
+    {{> google_analytics}}
 
-  <div id="top-tag-filter">
-    {{> tag_filter}}
-  </div>
-
-  <div id="main-pane">
-    {{> todos}}
-  </div>
-
-  <div id="side-pane">
-    {{> lists}}
-  </div>
-
-  <div id="chat">
-      {{> chat}}
-  </div>
-</body>
+</template>
 
 <template name="users">
     Users online: {{count}} <a class="show-online-users" href="#">show all</a>

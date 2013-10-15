@@ -28,54 +28,58 @@ var updateUsername = function($input) {
 
 Template.username_dialog.rendered = function() {
 
-    if (this.$input) {
-        // Prevent dialog reinit.
-        return;
-    }
-
     var $input = this.$input = $(this.find("#username-input"));
 
     var $dialog = $(this.find("#username-dialog"));
 
-    $dialog.dialog({
-        autoOpen: false,
-        modal: true,
-        resizable: false,
-        show: {
-            effect: "scale",
-            duration: 500
-        },
-        hide: {
-            effect: "scale",
-            duration: 500
-        },
-        open: function() {
-            $input.focus();
-            $input.select();
-        },
-        buttons: [
-            {
-                text: "Update",
-                click: function() {
-                    updateUsername($input);
-                }
-            }
-        ],
-        close: function( event, ui ) {
-            Session.set("editing_username", false);
-        }
-    });
-
     Deps.autorun(function() {
         var show = Session.get("editing_username");
-        var opened = $dialog.dialog("isOpen");
+        var opened = $dialog.attr("opened");
         if (show) {
             if (!opened) {
+
+                if (!$dialog.attr("inited")) {
+
+                    $dialog.attr("inited", true);
+
+                    $dialog.dialog({
+                        autoOpen: false,
+                        modal: true,
+                        resizable: false,
+                        show: {
+                            effect: "scale",
+                            duration: 500
+                        },
+                        hide: {
+                            effect: "scale",
+                            duration: 500
+                        },
+                        open: function() {
+                            $input.focus();
+                            $input.select();
+                        },
+                        buttons: [
+                            {
+                                text: "Update",
+                                click: function() {
+                                    updateUsername($input);
+                                }
+                            }
+                        ],
+                        close: function( event, ui ) {
+                            Session.set("editing_username", false);
+                        }
+                    });
+                }
+
                 $dialog.dialog('open');
+
+                $dialog.attr("opened", true);
             }
         } else {
             if (opened) {
                 $dialog.dialog('close');
+                $dialog.removeAttr("opened");
             }
         }
     });

@@ -41,10 +41,10 @@ Template.chat.rendered = function() {
 
     // Prevent multiple `rendered` calls on one list.
     // `rendered` called each time after `items.append`. Solve this by trigger.
-    if (this.renderHacked) {
+    if ($items.attr('rendered')) {
         return;
     }
-    this.renderHacked = true;
+    $items.attr('rendered', true);
 
     // [animation] Init animation.
     var animation = createSortableListAnimation({
