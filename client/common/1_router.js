@@ -11,10 +11,23 @@ var MainPageController = RouteController.extend({
         var oldList = Session.get("list_id");
         var oldTagFilter = Session.get("tag_filter");
 
-        if (oldList !== list_id || tag !== oldTagFilter) {
-            Session.set("list_id", list_id);
-            Session.set("tag_filter", tag);
+        if (!list_id) {
+            
+            // Do nicer;
+            routeToDefault();
+
+        } else {
+
+            var count = Lists.find({_id: list_id}).count();
+
+            if (count == 0) {
+                routeToDefault();
+            } else if (oldList !== list_id || tag !== oldTagFilter) {
+                Session.set("list_id", list_id);
+                Session.set("tag_filter", tag);
+            }
         }
+
         this.render();
     }
 });
@@ -32,6 +45,10 @@ TodosRouter = function() {
     this.route('tiles',{
         path: '/tiles',
         controller: TilesPageController
+    });
+    this.route('dashboard',{
+        path: '/',
+        controller: MainPageController
     });
     this.route('dashboard-list',{
         path: '/:list_id',

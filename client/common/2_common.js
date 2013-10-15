@@ -56,29 +56,26 @@ routeToDefault = function() {
 
 // Subscribe to 'lists' collection on startup.
 // Select a list once data has arrived.
-listsHandle = Meteor.subscribe('lists', function () {
-    /*
-    var list_id = Session.get('list_id');
+listsHandle = Meteor.subscribe('lists');
 
-    if (!list_id) {
-        routeToDefault();
-    } else {
+Deps.autorun(function() {
+    var list_id = Session.get('list_id');
+    var path = Router.path("dashboard-list", {list_id: list_id});
+
+    if (list_id) {
+
+        // Route if only current page is list.
+        if (document.location.indexOf(path) == -1) {
+            return;
+        }
+
         var count = Lists.find({_id: list_id}).count();
         if (count == 0) {
             routeToDefault();
         }
     }
-    */
 });
-/*
-Deps.autorun(function() {
-    var list_id = Session.get('list_id');
-    var count = Lists.find({_id: list_id}).count();
-    if (count == 0) {
-        routeToDefault();
-    }
-});
-*/
+
 chatHandle = Meteor.subscribe('chat');
 Meteor.subscribe('userPresence');
 
