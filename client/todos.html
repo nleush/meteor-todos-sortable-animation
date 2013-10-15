@@ -7,23 +7,8 @@
 </body>
 
 <template name="layout">
-    <div id="header">
-        <div>
-            <h4>Animation with sortable demo</h4>
-        </div>
-        <div class="hint">
-            try drag todos in two browser windows
-        </div>
-        <div>
-            <a href="https://github.com/nleush/meteor-todos-sortable-animation" target="_blank">source code</a>
-        </div>
-        <div>
-            {{> users }}
-        </div>
-        <div class="head-right">
-            {{> username_button}}
-        </div>
-    </div>
+
+    {{> header}}
 
     {{yield}}
 
@@ -37,6 +22,33 @@
 
 </template>
 
+<template name="header">
+    <div id="header">
+        <div>
+            <h4>Animation with sortable demo</h4>
+        </div>
+        <div class="hint">
+            try drag todos in two browser windows
+        </div>
+        <div>
+            <a href="https://github.com/nleush/meteor-todos-sortable-animation" target="_blank">source code</a>
+        </div>
+        <div>
+            {{> users }}
+        </div>
+        <div>
+            Pages: [
+            <a href="#" class="s-page-todos">todos</a>
+            |
+            <a href="#" class="s-page-tiles">tiles</a>
+            ]
+        </div>
+        <div class="head-right">
+            {{> username_button}}
+        </div>
+    </div>
+</template>
+
 <template name="users">
     Users online: {{count}} <a class="show-online-users" href="#">show all</a>
 </template>
@@ -47,7 +59,7 @@
 </template>
 
 <template name="username_dialog">
-    <div id="username-dialog" title="Change nickname">
+    <div id="username-dialog" title="Change nickname" style="display: none;">
         <div class="edit">
             {{#isolate}}
             <input class="" id="username-input" type="text" value="{{currentUser.username}}" />
@@ -57,7 +69,7 @@
 </template>
 
 <template name="online_users_dialog">
-    <div id="online-users-dialog" title="Online users">
+    <div id="online-users-dialog" title="Online users" style="display: none;">
         {{#each users}}
             {{> online_user }}
         {{/each}}

@@ -1,6 +1,6 @@
 ////////// Tracking selected list in URL //////////
 
-MainPageController = RouteController.extend({
+var MainPageController = RouteController.extend({
 
     template: 'dashboard',
 
@@ -19,7 +19,20 @@ MainPageController = RouteController.extend({
     }
 });
 
+var TilesPageController = RouteController.extend({
+
+    template: 'tiles',
+
+    run: function() {
+        this.render();
+    }
+});
+
 TodosRouter = function() {
+    this.route('tiles',{
+        path: '/tiles',
+        controller: TilesPageController
+    });
     this.route('dashboard-list',{
         path: '/:list_id',
         controller: MainPageController
