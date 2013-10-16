@@ -7,6 +7,10 @@ Template.users.count = function() {
 Template.users.events({
     'click .show-online-users': function(e) {
         e.preventDefault();
-        Session.set("online_users_dialog", true);
+
+        // TODO: reuse.
+        var evt = document.createEvent('CustomEvent');
+        evt.initCustomEvent('openDialog', false, false, null);
+        $('#online-users-dialog')[0].dispatchEvent(evt);
     }
 });

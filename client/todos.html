@@ -4,6 +4,11 @@
 
 <body>
 
+
+
+{{> online_users_dialog}}
+{{> google_analytics}}
+
 </body>
 
 <template name="layout">
@@ -15,10 +20,6 @@
     <div id="chat">
         {{> chat}}
     </div>
-
-    {{> username_dialog}}
-    {{> online_users_dialog}}
-    {{> google_analytics}}
 
 </template>
 
@@ -61,9 +62,7 @@
 <template name="username_dialog">
     <div id="username-dialog" title="Change nickname" style="display: none;">
         <div class="edit">
-            {{#isolate}}
             <input class="" id="username-input" type="text" value="{{currentUser.username}}" />
-            {{/isolate}}
         </div>
     </div>
 </template>
