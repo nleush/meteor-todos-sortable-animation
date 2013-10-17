@@ -3,6 +3,10 @@ Template.online_user.username = function() {
     return u ? u.username : "unknown";
 };
 
+Template.online_users_dialog.page = function() {
+    return Location._state.path;
+};
+
 Template.online_users_dialog.users = function() {
     var presences = Meteor.presences.find({}).fetch();
     return _.uniq(presences, false, function(d) {return d.userId});
@@ -24,9 +28,4 @@ Template.online_users_dialog.rendered = function() {
             routeToDefault();
         }
     });
-};
-
-Template.online_users_dialog.destroyed = function() {
-    console.log('udd');
-    this.modal.destroy();
 };

@@ -50,6 +50,12 @@ TodosRouter = function() {
             'online_users_dialog': {to: 'modal'}
         }
     });
+    this.route('online-users2',{
+        template: 'dashboard',
+        renderTemplates: {
+            'online_users_dialog': {to: 'modal'}
+        }
+    });
     this.route('change-nickname',{
         template: 'dashboard',
         renderTemplates: {

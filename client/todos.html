@@ -88,7 +88,10 @@
             <h3 id="online-users-dialog-label">Online users</h3>
         </div>
         <div class="modal-body">
+            <a href="{{pathFor 'online-users'}}">Modal form page 1</a>
+            <a href="{{pathFor 'online-users2'}}">Modal form page 2</a>
             {{#isolate}}
+                Page: {{page}}<br>
                 {{#each users}}
                     {{> online_user }}
                 {{/each}}

@@ -25,7 +25,7 @@ var updateUsername = function(t) {
         }
     });
 
-    t.modal.destroy();
+    t.modal.hide();
 };
 
 Template.username_dialog.rendered = function() {
@@ -37,22 +37,18 @@ Template.username_dialog.rendered = function() {
         return;
     }
 
-    this.$input = $(this.find("#username-input"));
+    var $input = this.$input = $(this.find("#username-input"));
 
     this.modal = new Modal({
         $modal: this.$modal,
         shown: function() {
-            $(this).find('#username-input').focus().select();
+            $input.focus().select();
         },
         hidden: function() {
             // TODO: make it smarter.
             routeToDefault();
         }
     });
-};
-
-Template.username_dialog.destroyed = function() {
-    this.modal.destroy();
 };
 
 Template.username_dialog.events({
