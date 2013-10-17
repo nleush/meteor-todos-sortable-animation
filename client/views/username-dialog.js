@@ -25,46 +25,34 @@ var updateUsername = function(t) {
         }
     });
 
-    t.$dialog.modal('hide');
-};
-
-var shown = function() {
-    $(this).find('#username-input').focus().select();
-};
-
-var hidden = function() {
-    // TODO: make it smarter.
-    routeToDefault();
+    t.modal.destroy();
 };
 
 Template.username_dialog.rendered = function() {
 
-    var $dialog = this.$dialog = $(this.find("#username-dialog"));
+    this.$modal = $(this.find("#username-dialog"));
 
-
-    //==
-    if ($dialog.attr('inited')) {
+    // Prevent reinit.
+    if (isMarked(this.$modal)) {
         return;
     }
-    $dialog.attr('inited', true);
-    //==
-
 
     this.$input = $(this.find("#username-input"));
 
-    $dialog.modal();
-
-    $dialog.off('shown', shown);
-    $dialog.on('shown', shown);
-    $dialog.off('hidden', hidden);
-    $dialog.on('hidden', hidden);
+    this.modal = new Modal({
+        $modal: this.$modal,
+        shown: function() {
+            $(this).find('#username-input').focus().select();
+        },
+        hidden: function() {
+            // TODO: make it smarter.
+            routeToDefault();
+        }
+    });
 };
 
 Template.username_dialog.destroyed = function() {
-    // !! Unsubscribe from hidden.
-    this.$dialog.off('shown', shown);
-    this.$dialog.off('hidden', hidden);
-    this.$dialog.modal('hide');
+    this.modal.destroy();
 };
 
 Template.username_dialog.events({

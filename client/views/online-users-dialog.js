@@ -8,31 +8,25 @@ Template.online_users_dialog.users = function() {
     return _.uniq(presences, false, function(d) {return d.userId});
 };
 
-var hidden = function() {
-    // TODO: make it smarter.
-    routeToDefault();
-};
-
 Template.online_users_dialog.rendered = function() {
 
-    var $dialog = this.$dialog = $(this.find("#online-users-dialog"));
+    this.$modal = $(this.find("#online-users-dialog"));
 
-
-    //==
-    if ($dialog.attr('inited')) {
+    // Prevent reinit.
+    if (isMarked(this.$modal)) {
         return;
     }
-    $dialog.attr('inited', true);
-    //==
 
-    $dialog.modal();
-
-    $dialog.off('hidden', hidden);
-    $dialog.on('hidden', hidden);
+    this.modal = new Modal({
+        $modal: this.$modal,
+        hidden: function() {
+            // TODO: make it smarter.
+            routeToDefault();
+        }
+    });
 };
 
-Template.username_dialog.destroyed = function() {
-    // !! Unsubscribe from hidden.
-    this.$dialog.off('hidden', hidden);
-    this.$dialog.modal('hide');
+Template.online_users_dialog.destroyed = function() {
+    console.log('udd');
+    this.modal.destroy();
 };

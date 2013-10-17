@@ -49,10 +49,9 @@ Template.lists.rendered = function() {
 
     // Prevent multiple `rendered` calls on one list.
     // `rendered` called each time after `items.append`. Solve this by trigger.
-    if ($items.attr('rendered')) {
+    if (isMarked($items)) {
         return;
     }
-    $items.attr('rendered', true);
 
     // [animation] Init animation.
     var animation = createSortableListAnimation({
