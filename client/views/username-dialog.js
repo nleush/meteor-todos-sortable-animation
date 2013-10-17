@@ -1,4 +1,4 @@
-var updateUsername = function($input, $dialog) {
+var updateUsername = function($input) {
 
     var value = $.trim($input.val());
     if (!value) {
@@ -23,73 +23,26 @@ var updateUsername = function($input, $dialog) {
         }
     });
 
-    $dialog.dialog('close');
+    // TODO: go back?
+    Router.go('dashboard');
 };
 
 Template.username_dialog.rendered = function() {
-    this.$input = $(this.find("#username-input"));
-    this.$dialog = $(this.find("#username-dialog"));
-};
 
+    this.$input = $(this.find("#username-input"));
+
+    var $dialog = $(this.find("#username-dialog"));
+
+    $dialog.modal();
+};
 
 Template.username_dialog.events({
     'keyup #username-input': function(evt, tmpl) {
         if (evt.keyCode === 13) {
-            updateUsername(tmpl.$input, tmpl.$dialog);
+            updateUsername(tmpl.$input);
         }
     },
-    'openDialog #username-dialog': function(e, t) {
-
-        var $dialog = $(t.find("#username-dialog"));
-        var opened = $dialog.attr("opened");
-        if (!opened) {
-
-            //if (!$dialog.attr("inited")) {
-
-                $dialog.attr("inited", true);
-
-                $dialog.dialog({
-                    autoOpen: false,
-                    modal: true,
-                    resizable: false,
-                    show: {
-                        effect: "scale",
-                        duration: 500
-                    },
-                    hide: {
-                        effect: "scale",
-                        duration: 500
-                    },
-                    open: function() {
-                        t.$input.focus();
-                        t.$input.select();
-                    },
-                    buttons: [
-                        {
-                            text: "Update",
-                            click: function() {
-                                updateUsername(t.$input);
-                            }
-                        }
-                    ],
-                    close: function( event, ui ) {
-                        $dialog.removeAttr("opened");
-                    }
-                });
-            //}
-
-            $dialog.dialog('open');
-
-            $dialog.attr("opened", true);
-        }
-    },
-    'closeDialog #username-dialog': function(e, t) {
-
-        var $dialog = $(t.find("#online-users-dialog"));
-        var opened = $dialog.attr("opened");
-
-        if (opened) {
-            $dialog.dialog('close');
-        }
+    'click .btn-primary': function(evt, tmpl) {
+        updateUsername(tmpl.$input);
     }
 });

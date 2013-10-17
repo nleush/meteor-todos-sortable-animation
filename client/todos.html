@@ -4,9 +4,6 @@
 
 <body>
 
-
-{{> username_dialog}}
-{{> online_users_dialog}}
 {{> google_analytics}}
 
 </body>
@@ -20,6 +17,8 @@
     <div id="chat">
         {{> chat}}
     </div>
+
+    {{yield 'modal'}}
 
 </template>
 
@@ -39,11 +38,12 @@
         </div>
         <div>
             Pages: [
-            <a href="#" class="s-page-todos">todos</a>
+            <a href="{{pathFor 'dashboard'}}" class="s-page-todos">todos</a>
             |
-            <a href="#" class="s-page-tiles">tiles</a>
+            <a href="{{pathFor 'tiles'}}" class="s-page-tiles">tiles</a>
             ]
         </div>
+
         <div class="head-right">
             {{> username_button}}
         </div>
@@ -51,27 +51,48 @@
 </template>
 
 <template name="users">
-    Users online: {{count}} <a class="show-online-users" href="#">show all</a>
+    Users online: {{count}} <a class="show-online-users" href="{{pathFor 'online-users'}}">show all</a>
 </template>
 
 <template name="username_button">
-    {{#if currentUser}}Your nickname: <strong>{{currentUser.username}}</strong> <a href="#" class="change-username-btn">change</a>{{/if}}
+    {{#if currentUser}}Your nickname: <strong>{{currentUser.username}}</strong> <a href="{{pathFor 'change-nickname'}}" class="change-username-btn">change</a>{{/if}}
 
 </template>
 
 <template name="username_dialog">
-    <div id="username-dialog" title="Change nickname" style="display: none;">
-        <div class="edit">
-            <input class="" id="username-input" type="text" value="{{currentUser.username}}" />
+    <!-- Modal -->
+    <div id="username-dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="username-dialog-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="username-dialog-label">Change nickname</h3>
+        </div>
+        <div class="modal-body">
+            <div class="edit">
+                <input class="" id="username-input" type="text" value="{{currentUser.username}}" />
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+            <button class="btn btn-primary">Save changes</button>
         </div>
     </div>
 </template>
 
 <template name="online_users_dialog">
-    <div id="online-users-dialog" title="Online users" style="display: none;">
-        {{#each users}}
+    <!-- Modal -->
+    <div id="online-users-dialog" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="online-users-dialog-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="online-users-dialog-label">Online users</h3>
+        </div>
+        <div class="modal-body">
+            {{#each users}}
             {{> online_user }}
-        {{/each}}
+            {{/each}}
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
     </div>
 </template>
 

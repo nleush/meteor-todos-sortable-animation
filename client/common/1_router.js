@@ -12,14 +12,12 @@ var MainPageController = RouteController.extend({
         var oldTagFilter = Session.get("tag_filter");
 
         if (!list_id) {
-            
+
             // Do nicer;
             routeToDefault();
 
         } else {
-
             var count = Lists.find({_id: list_id}).count();
-
             if (count == 0) {
                 routeToDefault();
             } else if (oldList !== list_id || tag !== oldTagFilter) {
@@ -45,6 +43,18 @@ TodosRouter = function() {
     this.route('tiles',{
         path: '/tiles',
         controller: TilesPageController
+    });
+    this.route('online-users',{
+        template: 'dashboard',
+        renderTemplates: {
+            'online_users_dialog': {to: 'modal'}
+        }
+    });
+    this.route('change-nickname',{
+        template: 'dashboard',
+        renderTemplates: {
+            'username_dialog': {to: 'modal'}
+        }
     });
     this.route('dashboard',{
         path: '/',
