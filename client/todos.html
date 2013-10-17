@@ -68,7 +68,9 @@
         </div>
         <div class="modal-body">
             <div class="edit">
-                <input class="" id="username-input" type="text" value="{{currentUser.username}}" />
+                {{#isolate}}
+                    <input class="" id="username-input" type="text" value="{{currentUser.username}}" />
+                {{/isolate}}
             </div>
         </div>
         <div class="modal-footer">
@@ -86,9 +88,11 @@
             <h3 id="online-users-dialog-label">Online users</h3>
         </div>
         <div class="modal-body">
-            {{#each users}}
-            {{> online_user }}
-            {{/each}}
+            {{#isolate}}
+                {{#each users}}
+                    {{> online_user }}
+                {{/each}}
+            {{/isolate}}
         </div>
         <div class="modal-footer">
             <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>

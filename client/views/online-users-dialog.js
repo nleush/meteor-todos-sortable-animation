@@ -14,7 +14,17 @@ var hidden = function() {
 };
 
 Template.online_users_dialog.rendered = function() {
+
     var $dialog = this.$dialog = $(this.find("#online-users-dialog"));
+
+
+    //==
+    if ($dialog.attr('inited')) {
+        return;
+    }
+    $dialog.attr('inited', true);
+    //==
+
     $dialog.modal();
 
     $dialog.off('hidden', hidden);

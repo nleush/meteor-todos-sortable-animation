@@ -25,7 +25,7 @@ var updateUsername = function(t) {
         }
     });
 
-    t.$dialog.modal('close');
+    t.$dialog.modal('hide');
 };
 
 var shown = function() {
@@ -39,9 +39,18 @@ var hidden = function() {
 
 Template.username_dialog.rendered = function() {
 
-    this.$input = $(this.find("#username-input"));
-
     var $dialog = this.$dialog = $(this.find("#username-dialog"));
+
+
+    //==
+    if ($dialog.attr('inited')) {
+        return;
+    }
+    $dialog.attr('inited', true);
+    //==
+
+
+    this.$input = $(this.find("#username-input"));
 
     $dialog.modal();
 
