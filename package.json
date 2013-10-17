@@ -1,0 +1,8 @@
+{
+    "name": "todos-animated-example",
+    "private": true,
+    "version": "0.0.1",
+    "engines": {
+        "node": "0.8.24"
+    }
+}
