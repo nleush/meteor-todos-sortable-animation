@@ -1,4 +1,6 @@
-var updateUsername = function($input) {
+var updateUsername = function(t) {
+
+    var $input = t.$input;
 
     var value = $.trim($input.val());
     if (!value) {
@@ -23,26 +25,46 @@ var updateUsername = function($input) {
         }
     });
 
-    // TODO: go back?
-    Router.go('dashboard');
+    t.$dialog.modal('close');
+};
+
+var shown = function() {
+    $(this).find('#username-input').focus().select();
+};
+
+var hidden = function() {
+    // TODO: make it smarter.
+    routeToDefault();
 };
 
 Template.username_dialog.rendered = function() {
 
     this.$input = $(this.find("#username-input"));
 
-    var $dialog = $(this.find("#username-dialog"));
+    var $dialog = this.$dialog = $(this.find("#username-dialog"));
 
     $dialog.modal();
+
+    $dialog.off('shown', shown);
+    $dialog.on('shown', shown);
+    $dialog.off('hidden', hidden);
+    $dialog.on('hidden', hidden);
+};
+
+Template.username_dialog.destroyed = function() {
+    // !! Unsubscribe from hidden.
+    this.$dialog.off('shown', shown);
+    this.$dialog.off('hidden', hidden);
+    this.$dialog.modal('hide');
 };
 
 Template.username_dialog.events({
     'keyup #username-input': function(evt, tmpl) {
         if (evt.keyCode === 13) {
-            updateUsername(tmpl.$input);
+            updateUsername(tmpl);
         }
     },
     'click .btn-primary': function(evt, tmpl) {
-        updateUsername(tmpl.$input);
+        updateUsername(tmpl);
     }
 });
