@@ -9,7 +9,6 @@ Template.online_users_dialog.users = function() {
 };
 
 Template.online_users_dialog.rendered = function() {
-
 };
 
 Template.online_users_dialog.events({
@@ -19,7 +18,7 @@ Template.online_users_dialog.events({
         var opened = $dialog.attr("opened");
         if (!opened) {
 
-//            if (!$dialog.attr("inited")) {
+            if (!$dialog.attr("inited")) {
 
                 $dialog.attr("inited", true);
 
@@ -41,7 +40,7 @@ Template.online_users_dialog.events({
                         $dialog.removeAttr("opened");
                     }
                 });
-//            }
+            }
 
             $dialog.dialog('open');
 
@@ -55,7 +54,6 @@ Template.online_users_dialog.events({
 
         if (opened) {
             $dialog.dialog('close');
-            $dialog.removeAttr("opened");
         }
     }
 });

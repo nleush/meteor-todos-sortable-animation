@@ -1,4 +1,4 @@
-var updateUsername = function($input) {
+var updateUsername = function($input, $dialog) {
 
     var value = $.trim($input.val());
     if (!value) {
@@ -23,73 +23,73 @@ var updateUsername = function($input) {
         }
     });
 
-    Session.set("editing_username", false);
+    $dialog.dialog('close');
 };
 
 Template.username_dialog.rendered = function() {
-
-    var $input = this.$input = $(this.find("#username-input"));
-
-    var $dialog = $(this.find("#username-dialog"));
-
-    Deps.autorun(function() {
-        var show = Session.get("editing_username");
-        var opened = $dialog.attr("opened");
-        if (show) {
-            if (!opened) {
-
-                if (!$dialog.attr("inited")) {
-
-                    $dialog.attr("inited", true);
-
-                    $dialog.dialog({
-                        autoOpen: false,
-                        modal: true,
-                        resizable: false,
-                        show: {
-                            effect: "scale",
-                            duration: 500
-                        },
-                        hide: {
-                            effect: "scale",
-                            duration: 500
-                        },
-                        open: function() {
-                            $input.focus();
-                            $input.select();
-                        },
-                        buttons: [
-                            {
-                                text: "Update",
-                                click: function() {
-                                    updateUsername($input);
-                                }
-                            }
-                        ],
-                        close: function( event, ui ) {
-                            Session.set("editing_username", false);
-                        }
-                    });
-                }
-
-                $dialog.dialog('open');
-
-                $dialog.attr("opened", true);
-            }
-        } else {
-            if (opened) {
-                $dialog.dialog('close');
-                $dialog.removeAttr("opened");
-            }
-        }
-    });
+    this.$input = $(this.find("#username-input"));
+    this.$dialog = $(this.find("#username-dialog"));
 };
 
 
 Template.username_dialog.events({
     'keyup #username-input': function(evt, tmpl) {
         if (evt.keyCode === 13) {
-            updateUsername(tmpl.$input);
+            updateUsername(tmpl.$input, tmpl.$dialog);
+        }
+    },
+    'openDialog #username-dialog': function(e, t) {
+
+        var $dialog = $(t.find("#username-dialog"));
+        var opened = $dialog.attr("opened");
+        if (!opened) {
+
+            //if (!$dialog.attr("inited")) {
+
+                $dialog.attr("inited", true);
+
+                $dialog.dialog({
+                    autoOpen: false,
+                    modal: true,
+                    resizable: false,
+                    show: {
+                        effect: "scale",
+                        duration: 500
+                    },
+                    hide: {
+                        effect: "scale",
+                        duration: 500
+                    },
+                    open: function() {
+                        t.$input.focus();
+                        t.$input.select();
+                    },
+                    buttons: [
+                        {
+                            text: "Update",
+                            click: function() {
+                                updateUsername(t.$input);
+                            }
+                        }
+                    ],
+                    close: function( event, ui ) {
+                        $dialog.removeAttr("opened");
+                    }
+                });
+            //}
+
+            $dialog.dialog('open');
+
+            $dialog.attr("opened", true);
+        }
+    },
+    'closeDialog #username-dialog': function(e, t) {
+
+        var $dialog = $(t.find("#online-users-dialog"));
+        var opened = $dialog.attr("opened");
+
+        if (opened) {
+            $dialog.dialog('close');
         }
     }
 });
