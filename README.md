@@ -109,9 +109,7 @@ Not actually issue but can be odd: if many changes occurs - only first of them w
 
 Also I want to implement following in next steps:
 
- 1. Use [Iron Router](https://github.com/EventedMind/iron-router).
- 2. Create animated popup for editing something.
- 3. Generic mechanism to preserver rerendered templates state.
+ 1. Generic mechanism to preserver rerendered templates state.
 
 ## Contribute
 
